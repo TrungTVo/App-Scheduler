@@ -54,6 +54,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
     // THE TA INPUT
     HBox addBox;
     TextField nameTextField;
+    TextField emailTextField;
     Button addButton;
 
     // THE HEADER ON THE RIGHT
@@ -103,16 +104,23 @@ public class TAWorkspace extends AppWorkspaceComponent {
         );
         taTable.getColumns().add(nameColumn);
 
-        // ADD BOX FOR ADDING A TA
+        // ADD BOX FOR ADDING A TA (name and email box)
         String namePromptText = props.getProperty(TAManagerProp.NAME_PROMPT_TEXT.toString());
+        String emailPrompText = props.getProperty(TAManagerProp.EMAIL_PROMPT_TEXT.toString());
         String addButtonText = props.getProperty(TAManagerProp.ADD_BUTTON_TEXT.toString());
         nameTextField = new TextField();
         nameTextField.setPromptText(namePromptText);
+        emailTextField = new TextField();
+        emailTextField.setPromptText(emailPrompText);
         addButton = new Button(addButtonText);
         addBox = new HBox();
         nameTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.4));
+        emailTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.4));
+        nameTextField.prefHeightProperty().bind(addBox.heightProperty().multiply(1));
+        emailTextField.prefHeightProperty().bind(addBox.heightProperty().multiply(1));
         addButton.prefWidthProperty().bind(addBox.widthProperty().multiply(.2));
         addBox.getChildren().add(nameTextField);
+        addBox.getChildren().add(emailTextField);
         addBox.getChildren().add(addButton);
 
         // INIT THE HEADER ON THE RIGHT
