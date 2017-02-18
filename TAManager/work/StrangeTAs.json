@@ -1,0 +1,204 @@
+
+{
+    "startHour":"9",
+    "endHour":"20",
+    "undergrad_tas":[
+        {
+            "name":"Billy Mays"
+        },
+        {
+            "name":"Jane Doe"
+        },
+        {
+            "name":"Joe Shmo"
+        },
+        {
+            "name":"Willie Mays"
+        },
+        {
+            "name":"Willie Mays Hayes"
+        }
+    ],
+    "officeHours":[
+        {
+            "day":"MONDAY",
+            "time":"9_00am",
+            "name":"Willie Mays"
+        },
+        {
+            "day":"FRIDAY",
+            "time":"9_00am",
+            "name":"Willie Mays"
+        },
+        {
+            "day":"MONDAY",
+            "time":"9_30am",
+            "name":"Willie Mays"
+        },
+        {
+            "day":"FRIDAY",
+            "time":"9_30am",
+            "name":"Willie Mays"
+        },
+        {
+            "day":"MONDAY",
+            "time":"10_00am",
+            "name":"Willie Mays"
+        },
+        {
+            "day":"FRIDAY",
+            "time":"10_00am",
+            "name":"Willie Mays"
+        },
+        {
+            "day":"MONDAY",
+            "time":"10_30am",
+            "name":"Willie Mays"
+        },
+        {
+            "day":"FRIDAY",
+            "time":"10_30am",
+            "name":"Willie Mays"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"11_30am",
+            "name":"Willie Mays Hayes"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"11_30am",
+            "name":"Willie Mays Hayes"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"12_00pm",
+            "name":"Willie Mays Hayes"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"12_00pm",
+            "name":"Willie Mays Hayes"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"12_30pm",
+            "name":"Billy Mays"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"12_30pm",
+            "name":"Willie Mays Hayes"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"12_30pm",
+            "name":"Billy Mays"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"12_30pm",
+            "name":"Willie Mays Hayes"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"1_00pm",
+            "name":"Billy Mays"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"1_00pm",
+            "name":"Billy Mays"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"1_30pm",
+            "name":"Billy Mays"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"1_30pm",
+            "name":"Jane Doe"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"1_30pm",
+            "name":"Billy Mays"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"1_30pm",
+            "name":"Jane Doe"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"2_00pm",
+            "name":"Billy Mays"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"2_00pm",
+            "name":"Jane Doe"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"2_00pm",
+            "name":"Billy Mays"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"2_00pm",
+            "name":"Jane Doe"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"2_30pm",
+            "name":"Jane Doe"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"2_30pm",
+            "name":"Jane Doe"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"3_00pm",
+            "name":"Jane Doe"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"3_00pm",
+            "name":"Jane Doe"
+        },
+        {
+            "day":"MONDAY",
+            "time":"3_30pm",
+            "name":"Willie Mays Hayes"
+        },
+        {
+            "day":"MONDAY",
+            "time":"4_00pm",
+            "name":"Willie Mays Hayes"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"6_00pm",
+            "name":"Joe Shmo"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"6_30pm",
+            "name":"Joe Shmo"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"7_00pm",
+            "name":"Joe Shmo"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"7_30pm",
+            "name":"Joe Shmo"
+        }
+    ]
+}

@@ -1,0 +1,98 @@
+package tam.workspace;
+
+import static tam.TAManagerProp.*;
+import djf.ui.AppMessageDialogSingleton;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import properties_manager.PropertiesManager;
+import tam.TAManagerApp;
+import tam.data.TAData;
+import tam.data.TeachingAssistant;
+import tam.workspace.TAWorkspace;
+
+/**
+ * This class provides responses to all workspace interactions, meaning
+ * interactions with the application controls not including the file
+ * toolbar.
+ * 
+ * @author Richard McKenna
+ * @version 1.0
+ */
+public class TAController {
+    // THE APP PROVIDES ACCESS TO OTHER COMPONENTS AS NEEDED
+    TAManagerApp app;
+
+    /**
+     * Constructor, note that the app must already be constructed.
+     */
+    public TAController(TAManagerApp initApp) {
+        // KEEP THIS FOR LATER
+        app = initApp;
+    }
+    
+    /**
+     * This method responds to when the user requests to add
+     * a new TA via the UI. Note that it must first do some
+     * validation to make sure a unique name and email address
+     * has been provided.
+     */
+    public void handleAddTA() {
+        // WE'LL NEED THE WORKSPACE TO RETRIEVE THE USER INPUT VALUES
+        TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
+        TextField nameTextField = workspace.getNameTextField();
+        String name = nameTextField.getText();
+        
+        // WE'LL NEED TO ASK THE DATA SOME QUESTIONS TOO
+        TAData data = (TAData)app.getDataComponent();
+        
+        // WE'LL NEED THIS IN CASE WE NEED TO DISPLAY ANY ERROR MESSAGES
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        // DID THE USER NEGLECT TO PROVIDE A TA NAME?
+        if (name.isEmpty()) {
+	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(MISSING_TA_NAME_TITLE), props.getProperty(MISSING_TA_NAME_MESSAGE));            
+        }
+        // DOES A TA ALREADY HAVE THE SAME NAME OR EMAIL?
+        else if (data.containsTA(name)) {
+	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));                                    
+        }
+        // EVERYTHING IS FINE, ADD A NEW TA
+        else {
+            // ADD THE NEW TA TO THE DATA
+            data.addTA(name);
+            
+            // CLEAR THE TEXT FIELDS
+            nameTextField.setText("");
+            
+            // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
+            nameTextField.requestFocus();
+        }
+    }
+
+    /**
+     * This function provides a response for when the user clicks
+     * on the office hours grid to add or remove a TA to a time slot.
+     * 
+     * @param pane The pane that was toggled.
+     */
+    public void handleCellToggle(Pane pane) {
+        // GET THE TABLE
+        TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
+        TableView taTable = workspace.getTATable();
+        
+        // IS A TA SELECTED IN THE TABLE?
+        Object selectedItem = taTable.getSelectionModel().getSelectedItem();
+        
+        // GET THE TA
+        TeachingAssistant ta = (TeachingAssistant)selectedItem;
+        String taName = ta.getName();
+        TAData data = (TAData)app.getDataComponent();
+        String cellKey = pane.getId();
+        
+        // AND TOGGLE THE OFFICE HOURS IN THE CLICKED CELL
+        data.toggleTAOfficeHours(cellKey, taName);
+    }
+}

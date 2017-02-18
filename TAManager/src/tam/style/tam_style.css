@@ -1,0 +1,113 @@
+/* 
+    This style sheet stylizes the controls inside our
+    TA Manager JavaFX application. Note that controls
+    in the UI must have the same class as those below in 
+    order to be rendered using those properties.
+
+    Note that it may seem overwhelming to see so many different
+    style classes, even though our application doesn't have that
+    many controls, but what this allows us to do is easily
+    control and update the style of the entire user interface
+    via a stylesheet without having the change Java code.
+
+    Author:	Richard McKenna
+    Version:	1.0
+*/
+.root{
+    
+}
+
+.dialog_pane {
+    -fx-padding:15;
+}
+
+.dialog_heading {
+    -fx-font-size: 24pt;
+    -fx-color:red;
+}
+
+.dialog_prompt {
+    -fx-font-size: 16pt;
+    -fx-font-weight: bold;
+    -fx-padding: 10;
+}
+
+.plain_pane{
+    
+}
+
+.bordered_pane {
+    -fx-background-color: #aaaaff;
+    -fx-background-radius: 5.0;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-border-width: 2px;
+    -fx-border-color: #7777dd;
+}
+
+.header_pane{
+    
+}
+
+.header_label {
+    
+}
+
+.ta_table{
+    
+}
+
+.table-view .column-header.ta_table_column_header .label {
+    
+}
+
+.add_ta_pane{
+    
+}
+
+.add_ta_text_field{
+    
+}
+
+.add_ta_button{
+    -fx-font-size: 14pt;
+    -fx-font-weight: bold;
+  -fx-border-radius: 10 10 10 10;
+  -fx-background-radius: 10 10 10 10;    
+}
+
+.office_hours_grid{
+    
+}
+
+.office_hours_grid_time_column_header_pane{
+    
+}
+
+.office_hours_grid_time_column_header_label{
+    
+}
+
+.office_hours_grid_day_column_header_pane{
+    
+}
+
+.office_hours_grid_day_column_header_label{
+    
+}
+
+.office_hours_grid_time_cell_pane{
+    
+}
+
+.office_hours_grid_time_cell_label{
+    
+}
+
+.office_hours_grid_ta_cell_pane{
+    
+}
+
+.office_hours_grid_ta_cell_label{
+    
+}
