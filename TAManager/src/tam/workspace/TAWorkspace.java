@@ -50,6 +50,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
     // FOR THE TA TABLE
     TableView<TeachingAssistant> taTable;
     TableColumn<TeachingAssistant, String> nameColumn;
+    TableColumn<TeachingAssistant, String> emailColumn;
 
     // THE TA INPUT
     HBox addBox;
@@ -99,10 +100,15 @@ public class TAWorkspace extends AppWorkspaceComponent {
         String nameColumnText = props.getProperty(TAManagerProp.NAME_COLUMN_TEXT.toString());
         String emailColumnText = props.getProperty(TAManagerProp.EMAIL_COLUMN_TEXT.toString());
         nameColumn = new TableColumn(nameColumnText);
+        emailColumn = new TableColumn(emailColumnText);
         nameColumn.setCellValueFactory(
                 new PropertyValueFactory<TeachingAssistant, String>("name")
         );
+        emailColumn.setCellValueFactory(
+                new PropertyValueFactory<TeachingAssistant, String>("email")
+        );
         taTable.getColumns().add(nameColumn);
+        taTable.getColumns().add(emailColumn);
 
         // ADD BOX FOR ADDING A TA (name and email box)
         String namePromptText = props.getProperty(TAManagerProp.NAME_PROMPT_TEXT.toString());
