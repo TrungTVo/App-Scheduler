@@ -248,23 +248,10 @@ public class TAData implements AppDataComponent {
     public void toggleTAOfficeHours(String cellKey, String taName) {
         StringProperty cellProp = officeHours.get(cellKey);
         String cellText = cellProp.getValue();
-        if (!cellText.contains(taName) && cellText.isEmpty())
-            cellProp.setValue(taName);
-        else if (!cellText.contains(taName))
+        if (!cellText.contains(taName))
             cellProp.setValue(cellText + "\n" + taName);
         else
-            cellProp.setValue(removeTAName(cellText, taName));
-    }
-    
-    // HELPER METHOD: Remove taName if a cell already contained it (toggle)
-    public String removeTAName(String cellText, String taName){
-        StringBuilder finalCellText = new StringBuilder(cellText);
-        int indexOfTAName = finalCellText.indexOf(taName);
-        if (indexOfTAName == 0)
-            finalCellText.delete(0, taName.length()+2);
-        else
-            finalCellText.delete(indexOfTAName-2, indexOfTAName+taName.length());
-        return finalCellText.toString();
+            removeTAFromCell(cellProp, taName);
     }
     
     /**
