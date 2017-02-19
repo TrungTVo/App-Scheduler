@@ -8,6 +8,7 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import djf.components.AppDataComponent;
 import djf.components.AppFileComponent;
+import djf.settings.AppStartupConstants;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -71,7 +72,11 @@ public class TAFiles implements AppFileComponent {
         for (int i = 0; i < jsonTAArray.size(); i++) {
             JsonObject jsonTA = jsonTAArray.getJsonObject(i);
             String name = jsonTA.getString(JSON_NAME);
-            String email = jsonTA.getString(JSON_EMAIL);
+            String email;
+            if (!filePath.equals("/Users/trungvo/Documents/CSE219/HW/TAManager/TAManager/work/StrangeTAs.json"))
+                email = jsonTA.getString(JSON_EMAIL);
+            else
+                email = null;
             dataManager.addTA(name, email);
         }
 
