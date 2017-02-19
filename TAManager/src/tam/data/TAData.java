@@ -222,9 +222,9 @@ public class TAData implements AppDataComponent {
         return false;
     }
 
-    public void addTA(String initName) {
+    public void addTA(String initName, String initEmail) {
         // MAKE THE TA
-        TeachingAssistant ta = new TeachingAssistant(initName);
+        TeachingAssistant ta = new TeachingAssistant(initName, initEmail);
 
         // ADD THE TA
         if (!containsTA(initName)) {

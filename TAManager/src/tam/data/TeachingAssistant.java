@@ -11,12 +11,14 @@ import javafx.beans.property.StringProperty;
 public class TeachingAssistant<E extends Comparable<E>> implements Comparable<E>  {
     // THE TABLE WILL STORE TA NAMES AND EMAILS
     private final StringProperty name;
+    private final StringProperty email;
 
     /**
      * Constructor initializes the TA name
      */
-    public TeachingAssistant(String initName) {
+    public TeachingAssistant(String initName, String initEmail) {
         name = new SimpleStringProperty(initName);
+        email = new SimpleStringProperty(initEmail);
     }
 
     // ACCESSORS AND MUTATORS FOR THE PROPERTIES
@@ -24,9 +26,17 @@ public class TeachingAssistant<E extends Comparable<E>> implements Comparable<E>
     public String getName() {
         return name.get();
     }
+    
+    public String getEmail(){
+        return email.get();
+    }
 
     public void setName(String initName) {
         name.set(initName);
+    }
+    
+    public void setEmail(String initEmail){
+        email.set(initEmail);
     }
 
     @Override

@@ -43,6 +43,7 @@ public class TAFiles implements AppFileComponent {
     static final String JSON_DAY = "day";
     static final String JSON_TIME = "time";
     static final String JSON_NAME = "name";
+    static final String JSON_EMAIL = "email";
     static final String JSON_UNDERGRAD_TAS = "undergrad_tas";
     
     public TAFiles(TAManagerApp initApp) {
@@ -70,7 +71,8 @@ public class TAFiles implements AppFileComponent {
         for (int i = 0; i < jsonTAArray.size(); i++) {
             JsonObject jsonTA = jsonTAArray.getJsonObject(i);
             String name = jsonTA.getString(JSON_NAME);
-            dataManager.addTA(name);
+            String email = jsonTA.getString(JSON_EMAIL);
+            dataManager.addTA(name, email);
         }
 
         // AND THEN ALL THE OFFICE HOURS

@@ -201,6 +201,10 @@ public class TAWorkspace extends AppWorkspaceComponent {
     public TextField getNameTextField() {
         return nameTextField;
     }
+    
+    public TextField getEmailTextField(){
+        return emailTextField;
+    }
 
     public Button getAddButton() {
         return addButton;

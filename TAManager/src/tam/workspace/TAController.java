@@ -41,7 +41,9 @@ public class TAController {
         // WE'LL NEED THE WORKSPACE TO RETRIEVE THE USER INPUT VALUES
         TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
         TextField nameTextField = workspace.getNameTextField();
+        TextField emailTextField = workspace.getEmailTextField();
         String name = nameTextField.getText();
+        String email = emailTextField.getText();
         
         // WE'LL NEED TO ASK THE DATA SOME QUESTIONS TOO
         TAData data = (TAData)app.getDataComponent();
@@ -62,13 +64,15 @@ public class TAController {
         // EVERYTHING IS FINE, ADD A NEW TA
         else {
             // ADD THE NEW TA TO THE DATA
-            data.addTA(name);
+            data.addTA(name, email);
             
             // CLEAR THE TEXT FIELDS
             nameTextField.setText("");
+            emailTextField.setText("");
             
             // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
             nameTextField.requestFocus();
+            emailTextField.requestFocus();
         }
     }
 
