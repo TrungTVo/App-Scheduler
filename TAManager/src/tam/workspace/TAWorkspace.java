@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import tam.TAManagerApp;
 import javafx.collections.ObservableList;
+import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,6 +27,8 @@ import tam.TAManagerProp;
 import tam.style.TAStyle;
 import tam.data.TAData;
 import tam.data.TeachingAssistant;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * This class serves as the workspace component for the TA Manager
@@ -361,6 +364,24 @@ public class TAWorkspace extends AppWorkspaceComponent {
                 controller.handleCellToggle((Pane) e.getSource());
             });
         }
+        
+        // Handle Delete TA from table by pressing "Delete" Key
+        // Get the table
+        TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
+        TableView taTable = workspace.getTATable();
+        
+        taTable.setOnMouseClicked(e -> {
+            // IS A TA SELECTED IN THE TABLE?
+            Object selectedItem = taTable.getSelectionModel().getSelectedItem();
+            if (selectedItem != null){
+                TeachingAssistant ta = (TeachingAssistant)selectedItem;
+                taTable.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+                    if (ev.getCode() == KeyCode.BACK_SPACE){
+                        controller.handleDeleteTAfromTable(ta);
+                    }
+                });
+            }
+        });
         
         // AND MAKE SURE ALL THE COMPONENTS HAVE THE PROPER STYLE
         TAStyle taStyle = (TAStyle)app.getStyleComponent();

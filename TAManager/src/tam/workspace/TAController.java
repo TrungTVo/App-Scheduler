@@ -10,6 +10,7 @@ import tam.TAManagerApp;
 import tam.data.TAData;
 import tam.data.TeachingAssistant;
 import tam.workspace.TAWorkspace;
+import javafx.beans.property.StringProperty;
 
 /**
  * This class provides responses to all workspace interactions, meaning
@@ -98,5 +99,16 @@ public class TAController {
         
         // AND TOGGLE THE OFFICE HOURS IN THE CLICKED CELL
         data.toggleTAOfficeHours(cellKey, taName);
+    }
+    
+    public void handleDeleteTAfromTable(TeachingAssistant ta) {
+        String taName = ta.getName();
+        TAData data = (TAData)app.getDataComponent();
+        for (String cellKey:data.getOfficeHours().keySet()){
+            StringProperty cellText = data.getOfficeHours().get(cellKey);
+            if (cellText.getValue().contains(taName))
+                data.removeTAFromCell(cellText, taName);
+        }
+        data.getTeachingAssistants().remove(ta);
     }
 }
