@@ -173,12 +173,6 @@ public class TAWorkspace extends AppWorkspaceComponent {
         controller = new TAController(app);
 
         // CONTROLS FOR ADDING TAs
-        nameTextField.setOnAction(e -> {
-            controller.handleAddTA();
-        });
-        emailTextField.setOnAction(e -> {
-            controller.handleAddTA();
-        });
         addButton.setOnAction(e -> {
             controller.handleAddTA();
             app.getGUI().getAppFileController().markAsEdited(app.getGUI());     // flag as file as been modified
