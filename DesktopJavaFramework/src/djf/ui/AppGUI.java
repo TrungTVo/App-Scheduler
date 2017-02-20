@@ -83,6 +83,7 @@ public class AppGUI {
         initWindow();
     }
     
+    public AppFileController getAppFileController() { return fileController; }
     /**
      * Accessor method for getting the application pane, within which all
      * user interface controls are ultimately placed.

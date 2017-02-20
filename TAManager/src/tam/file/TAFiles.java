@@ -109,9 +109,15 @@ public class TAFiles implements AppFileComponent {
 	// NOW BUILD THE TA JSON OBJCTS TO SAVE
 	JsonArrayBuilder taArrayBuilder = Json.createArrayBuilder();
 	ObservableList<TeachingAssistant> tas = dataManager.getTeachingAssistants();
-	for (TeachingAssistant ta : tas) {	    
-	    JsonObject taJson = Json.createObjectBuilder()
+	for (TeachingAssistant ta : tas) {
+            JsonObject taJson;
+            if (ta.getEmail() != null){
+                taJson = Json.createObjectBuilder()
+		    .add(JSON_NAME, ta.getName()).add(JSON_EMAIL, ta.getEmail()).build();
+            } else {
+                taJson = Json.createObjectBuilder()
 		    .add(JSON_NAME, ta.getName()).build();
+            }
 	    taArrayBuilder.add(taJson);
 	}
 	JsonArray undergradTAsArray = taArrayBuilder.build();

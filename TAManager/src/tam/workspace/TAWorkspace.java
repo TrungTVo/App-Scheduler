@@ -29,7 +29,8 @@ import tam.data.TAData;
 import tam.data.TeachingAssistant;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
+import java.util.*;
+import javafx.beans.property.StringProperty;
 /**
  * This class serves as the workspace component for the TA Manager
  * application. It provides all the user interface controls in 
@@ -175,8 +176,12 @@ public class TAWorkspace extends AppWorkspaceComponent {
         nameTextField.setOnAction(e -> {
             controller.handleAddTA();
         });
+        emailTextField.setOnAction(e -> {
+            controller.handleAddTA();
+        });
         addButton.setOnAction(e -> {
             controller.handleAddTA();
+            app.getGUI().getAppFileController().markAsEdited(app.getGUI());     // flag as file as been modified
         });
     }
     
@@ -357,11 +362,12 @@ public class TAWorkspace extends AppWorkspaceComponent {
             }
             row += 2;
         }
-
+        
         // CONTROLS FOR TOGGLING TA OFFICE HOURS
         for (Pane p : officeHoursGridTACellPanes.values()) {
             p.setOnMouseClicked(e -> {
                 controller.handleCellToggle((Pane) e.getSource());
+                app.getGUI().getAppFileController().markAsEdited(app.getGUI());     // flag as file has been modified
             });
         }
         
@@ -378,6 +384,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
                 taTable.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
                     if (ev.getCode() == KeyCode.BACK_SPACE){
                         controller.handleDeleteTAfromTable(ta);
+                        app.getGUI().getAppFileController().markAsEdited(app.getGUI());         // flag as file has been modified
                     }
                 });
             }
