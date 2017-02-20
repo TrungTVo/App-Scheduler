@@ -8,6 +8,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import tam.data.TeachingAssistant;
 import tam.workspace.TAWorkspace;
+import javafx.scene.layout.Pane;
 
 /**
  * This class manages all CSS style for this application.
@@ -109,6 +110,26 @@ public class TAStyle extends AppStyleComponent {
         setStyleClassOnAll(workspaceComponent.getOfficeHoursGridTimeCellLabels(), CLASS_OFFICE_HOURS_GRID_TIME_CELL_LABEL);
         setStyleClassOnAll(workspaceComponent.getOfficeHoursGridTACellPanes(), CLASS_OFFICE_HOURS_GRID_TA_CELL_PANE);
         setStyleClassOnAll(workspaceComponent.getOfficeHoursGridTACellLabels(), CLASS_OFFICE_HOURS_GRID_TA_CELL_LABEL);
+        
+        // hover effect
+        for (Pane pane:workspaceComponent.getOfficeHoursGridTACellPanes().values()){
+            pane.setOnMouseEntered(e -> {
+                pane.setStyle("-fx-background-color: #ffff00");
+                String cellKey = workspaceComponent.getCellKey(pane);
+                String[] rowCol = cellKey.split("_");           // [0]-col; [1]-row
+                workspaceComponent.getOfficeHoursGridTimeCellPanes().get("0_"+rowCol[1]).setStyle("-fx-background-color: #87CEEB");
+                workspaceComponent.getOfficeHoursGridTimeCellPanes().get("1_"+rowCol[1]).setStyle("-fx-background-color: #87CEEB");
+                workspaceComponent.getOfficeHoursGridDayHeaderPanes().get(String.valueOf(rowCol[0])+"_0").setStyle("-fx-background-color: #87CEEB");
+            });
+            pane.setOnMouseExited(e -> {
+                pane.setStyle("-fx-background-color: #BDB76B");
+                String cellKey = workspaceComponent.getCellKey(pane);
+                String[] rowCol = cellKey.split("_");           // [0]-col; [1]-row
+                workspaceComponent.getOfficeHoursGridTimeCellPanes().get("0_"+rowCol[1]).setStyle("-fx-background-color: #0000ff");
+                workspaceComponent.getOfficeHoursGridTimeCellPanes().get("1_"+rowCol[1]).setStyle("-fx-background-color: #0000ff");
+                workspaceComponent.getOfficeHoursGridDayHeaderPanes().get(String.valueOf(rowCol[0])+"_0").setStyle("-fx-background-color: navy");
+            });
+        }
     }
     
     /**
