@@ -1,0 +1,140 @@
+
+{
+    "startHour":"9",
+    "endHour":"20",
+    "undergrad_tas":[
+        {
+            "name":"Bryan Robicheau",
+            "email":"bryan.robicheau@stonybrook.edu"
+        },
+        {
+            "name":"Chaeyoung Lee",
+            "email":"chaeyoung.lee@stonybrook.edu"
+        },
+        {
+            "name":"Hsiang-Ju Lai",
+            "email":"hsiang-ju.lai@stonybrook.edu"
+        },
+        {
+            "name":"Jamie Kunzmann",
+            "email":"jamie.kunzmann@stonybrook.edu"
+        }
+    ],
+    "officeHours":[
+        {
+            "day":"FRIDAY",
+            "time":"10_00am",
+            "name":"Jamie Kunzmann"
+        },
+        {
+            "day":"FRIDAY",
+            "time":"10_30am",
+            "name":"Jamie Kunzmann"
+        },
+        {
+            "day":"FRIDAY",
+            "time":"11_00am",
+            "name":"Jamie Kunzmann"
+        },
+        {
+            "day":"FRIDAY",
+            "time":"11_30am",
+            "name":"Jamie Kunzmann"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"1_00pm",
+            "name":"Jamie Kunzmann"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"1_00pm",
+            "name":"Hsiang-Ju Lai"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"1_00pm",
+            "name":"Jamie Kunzmann"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"1_00pm",
+            "name":"Hsiang-Ju Lai"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"1_30pm",
+            "name":"Jamie Kunzmann"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"1_30pm",
+            "name":"Hsiang-Ju Lai"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"1_30pm",
+            "name":"Jamie Kunzmann"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"1_30pm",
+            "name":"Hsiang-Ju Lai"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"2_00pm",
+            "name":"Bryan Robicheau"
+        },
+        {
+            "day":"MONDAY",
+            "time":"2_30pm",
+            "name":"Bryan Robicheau"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"2_30pm",
+            "name":"Bryan Robicheau"
+        },
+        {
+            "day":"MONDAY",
+            "time":"3_00pm",
+            "name":"Bryan Robicheau"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"3_00pm",
+            "name":"Bryan Robicheau"
+        },
+        {
+            "day":"MONDAY",
+            "time":"3_30pm",
+            "name":"Bryan Robicheau"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"3_30pm",
+            "name":"Bryan Robicheau"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"6_00pm",
+            "name":"Chaeyoung Lee"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"6_30pm",
+            "name":"Chaeyoung Lee"
+        },
+        {
+            "day":"MONDAY",
+            "time":"7_00pm",
+            "name":"Hsiang-Ju Lai"
+        },
+        {
+            "day":"MONDAY",
+            "time":"7_30pm",
+            "name":"Hsiang-Ju Lai"
+        }
+    ]
+}
