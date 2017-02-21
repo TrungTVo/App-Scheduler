@@ -248,17 +248,19 @@ public class TAData implements AppDataComponent {
     public void toggleTAOfficeHours(String cellKey, String taName) {
         StringProperty cellProp = officeHours.get(cellKey);
         String cellText = cellProp.getValue();
-        if (!cellText.contains(taName))
+        if (!cellText.contains(taName)){
             cellProp.setValue(cellText + "\n" + taName);
-        else
-            removeTAFromCell(cellProp, taName);
+            officeHours.put(cellKey, cellProp);
+        } else {
+            removeTAFromCell(cellProp, taName, cellKey);
+        }
     }
     
     /**
      * This method removes taName from the office grid cell
      * represented by cellProp.
      */
-    public void removeTAFromCell(StringProperty cellProp, String taName) {
+    public void removeTAFromCell(StringProperty cellProp, String taName, String cellKey) {
         // GET THE CELL TEXT
         String cellText = cellProp.getValue();
         // IS IT THE ONLY TA IN THE CELL?
@@ -267,15 +269,16 @@ public class TAData implements AppDataComponent {
         }
         // IS IT THE FIRST TA IN A CELL WITH MULTIPLE TA'S?
         else if (cellText.indexOf(taName) == 0) {
-            int startIndex = cellText.indexOf("\n") + 1;
+            int startIndex = cellText.indexOf("\n",2);
             cellText = cellText.substring(startIndex);
             cellProp.setValue(cellText);
         }
         // IT MUST BE ANOTHER TA IN THE CELL
         else {
             int startIndex = cellText.indexOf("\n" + taName);
-            cellText = cellText.substring(0, startIndex);
+            cellText = cellText.substring(0, startIndex) + cellText.substring(startIndex+1+taName.length());
             cellProp.setValue(cellText);
         }
+        officeHours.put(cellKey, cellProp);
     }
 }

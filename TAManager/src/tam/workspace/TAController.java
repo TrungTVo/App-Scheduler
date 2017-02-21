@@ -90,7 +90,6 @@ public class TAController {
         
         // IS A TA SELECTED IN THE TABLE?
         Object selectedItem = taTable.getSelectionModel().getSelectedItem();
-        
         // GET THE TA
         TeachingAssistant ta = (TeachingAssistant)selectedItem;
         String taName = ta.getName();
@@ -107,7 +106,7 @@ public class TAController {
         for (String cellKey:data.getOfficeHours().keySet()){
             StringProperty cellText = data.getOfficeHours().get(cellKey);
             if (cellText.getValue().contains(taName))
-                data.removeTAFromCell(cellText, taName);
+                data.removeTAFromCell(cellText, taName, cellKey);
         }
         data.getTeachingAssistants().remove(ta);
     }

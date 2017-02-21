@@ -369,18 +369,34 @@ public class TAWorkspace extends AppWorkspaceComponent {
         // Get the table
         TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
         TableView taTable = workspace.getTATable();
-        
+        /*
         taTable.setOnMouseClicked(e -> {
             // IS A TA SELECTED IN THE TABLE?
             Object selectedItem = taTable.getSelectionModel().getSelectedItem();
             if (selectedItem != null){
                 TeachingAssistant ta = (TeachingAssistant)selectedItem;
+                System.out.println("Selected "+ta.getName());
                 taTable.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
                     if (ev.getCode() == KeyCode.BACK_SPACE){
+                        System.out.println("Deleted "+ta.getName());
                         controller.handleDeleteTAfromTable(ta);
                         app.getGUI().getAppFileController().markAsEdited(app.getGUI());         // flag as file has been modified
                     }
                 });
+            }
+        }); */
+        
+        taTable.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+            // IS A TA SELECTED IN THE TABLE?
+            Object selectedItem = taTable.getSelectionModel().getSelectedItem();
+            System.out.println(selectedItem);
+            if (selectedItem != null){
+                TeachingAssistant ta = (TeachingAssistant)selectedItem;
+                System.out.println("Deleted "+ta.getName());
+                if (ev.getCode() == KeyCode.BACK_SPACE){
+                    controller.handleDeleteTAfromTable(ta);
+                    app.getGUI().getAppFileController().markAsEdited(app.getGUI());         // flag as file has been modified
+                }
             }
         });
         
