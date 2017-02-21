@@ -398,6 +398,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
                     app.getGUI().getAppFileController().markAsEdited(app.getGUI());         // flag as file has been modified
                 }
             }
+            taTable.getSelectionModel().clearSelection();
         });
         
         // AND MAKE SURE ALL THE COMPONENTS HAVE THE PROPER STYLE
