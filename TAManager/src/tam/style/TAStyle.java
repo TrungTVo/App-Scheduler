@@ -120,6 +120,8 @@ public class TAStyle extends AppStyleComponent {
                 workspaceComponent.getOfficeHoursGridTimeCellPanes().get("0_"+rowCol[1]).setStyle("-fx-background-color: #87CEEB");
                 workspaceComponent.getOfficeHoursGridTimeCellPanes().get("1_"+rowCol[1]).setStyle("-fx-background-color: #87CEEB");
                 workspaceComponent.getOfficeHoursGridDayHeaderPanes().get(String.valueOf(rowCol[0])+"_0").setStyle("-fx-background-color: #87CEEB");
+                highlightLeftTargetCell(workspaceComponent, rowCol[0], rowCol[1], "#F0E68C");
+                highlightAboveTargetCell(workspaceComponent, rowCol[0], rowCol[1], "#F0E68C");
             });
             pane.setOnMouseExited(e -> {
                 pane.setStyle("-fx-background-color: #BDB76B");
@@ -128,7 +130,21 @@ public class TAStyle extends AppStyleComponent {
                 workspaceComponent.getOfficeHoursGridTimeCellPanes().get("0_"+rowCol[1]).setStyle("-fx-background-color: #0000ff");
                 workspaceComponent.getOfficeHoursGridTimeCellPanes().get("1_"+rowCol[1]).setStyle("-fx-background-color: #0000ff");
                 workspaceComponent.getOfficeHoursGridDayHeaderPanes().get(String.valueOf(rowCol[0])+"_0").setStyle("-fx-background-color: navy");
+                highlightLeftTargetCell(workspaceComponent, rowCol[0], rowCol[1], "#BDB76B");
+                highlightAboveTargetCell(workspaceComponent, rowCol[0], rowCol[1], "#BDB76B");
             });
+        }
+    }
+    
+    public void highlightLeftTargetCell(TAWorkspace workspaceComponent, String col, String row, String color) {
+        for (int i=2; i<Integer.parseInt(col); i++){
+            workspaceComponent.getOfficeHoursGridTACellPanes().get(String.valueOf(i)+"_"+String.valueOf(row)).setStyle("-fx-background-color: "+color);
+        }
+    }
+    
+    public void highlightAboveTargetCell(TAWorkspace workspaceComponent, String col, String row, String color) {
+        for (int i=1; i<Integer.parseInt(row); i++){
+            workspaceComponent.getOfficeHoursGridTACellPanes().get(String.valueOf(col)+"_"+String.valueOf(i)).setStyle("-fx-background-color: "+color);
         }
     }
     
