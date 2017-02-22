@@ -3,7 +3,25 @@
     "startHour":"9",
     "endHour":"20",
     "undergrad_tas":[
+        {
+            "name":"Aiko Chu",
+            "email":""
+        },
+        {
+            "name":"vo thanh trung",
+            "email":"vtt311096@gmail.com"
+        }
     ],
     "officeHours":[
+        {
+            "day":"TUESDAY",
+            "time":"12_00pm",
+            "name":"vo thanh trung"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"12_00pm",
+            "name":"Aiko Chu"
+        }
     ]
 }

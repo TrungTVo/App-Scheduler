@@ -1,3 +1,5 @@
 .DS_Store
-TAManager/work
-TAManager/build
+DesktopJavaFramework/DesktopJavaFramework/build/*
+PropertiesManager/PropertiesManager/build/*
+TAManager/work/*
+TAManager/TAManager/build/*
