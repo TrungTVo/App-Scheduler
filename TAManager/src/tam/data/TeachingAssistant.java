@@ -6,7 +6,7 @@ import javafx.beans.property.StringProperty;
 /**
  * This class represents a Teaching Assistant for the table of TAs.
  * 
- * @author Richard McKenna
+ * @author Richard McKenna - Trung Vo
  */
 public class TeachingAssistant<E extends Comparable<E>> implements Comparable<E>  {
     // THE TABLE WILL STORE TA NAMES AND EMAILS

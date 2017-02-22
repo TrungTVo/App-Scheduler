@@ -32,7 +32,7 @@ import static djf.settings.AppStartupConstants.PATH_WORK;
  * This class provides the event programmed responses for the file controls
  * that are provided by this framework.
  * 
- * @author Richard McKenna
+ * @author Richard McKenna - Trung Vo
  * @version 1.0
  */
 public class AppFileController {
