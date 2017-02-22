@@ -72,11 +72,7 @@ public class TAFiles implements AppFileComponent {
         for (int i = 0; i < jsonTAArray.size(); i++) {
             JsonObject jsonTA = jsonTAArray.getJsonObject(i);
             String name = jsonTA.getString(JSON_NAME);
-            String email;
-            if (!filePath.equals("/Users/trungvo/Documents/CSE219/HW/TAManager/TAManager/work/StrangeTAs.json"))
-                email = jsonTA.getString(JSON_EMAIL);
-            else
-                email = null;
+            String email = jsonTA.getString(JSON_EMAIL);
             dataManager.addTA(name, email);
         }
 
