@@ -221,6 +221,15 @@ public class TAData implements AppDataComponent {
         }
         return false;
     }
+    
+    public boolean containsTAEmail(String taEmail){
+        for (TeachingAssistant ta : teachingAssistants) {
+            if (ta.getEmail().equals(taEmail)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void addTA(String initName, String initEmail) {
         // MAKE THE TA

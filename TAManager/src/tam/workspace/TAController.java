@@ -38,7 +38,7 @@ public class TAController {
      * validation to make sure a unique name and email address
      * has been provided.
      */
-    public void handleAddTA() {
+    public boolean handleAddTA() {
         // WE'LL NEED THE WORKSPACE TO RETRIEVE THE USER INPUT VALUES
         TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
         TextField nameTextField = workspace.getNameTextField();
@@ -56,11 +56,21 @@ public class TAController {
         if (name.isEmpty()) {
 	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
 	    dialog.show(props.getProperty(MISSING_TA_NAME_TITLE), props.getProperty(MISSING_TA_NAME_MESSAGE));            
+            return false;
+        } else if (email.isEmpty()) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+            dialog.show(props.getProperty(MISSING_TA_EMAIL_TITLE), props.getProperty(MISSING_TA_EMAIL_MESSAGE));
+            return false;
         }
         // DOES A TA ALREADY HAVE THE SAME NAME OR EMAIL?
         else if (data.containsTA(name)) {
 	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
 	    dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));                                    
+            return false;
+        } else if (data.containsTAEmail(email)){
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+	    dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));
+            return false;
         }
         // EVERYTHING IS FINE, ADD A NEW TA
         else {
@@ -74,6 +84,7 @@ public class TAController {
             // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
             nameTextField.requestFocus();
             emailTextField.requestFocus();
+            return true;
         }
     }
 

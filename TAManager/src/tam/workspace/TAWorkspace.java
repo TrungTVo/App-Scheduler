@@ -174,8 +174,10 @@ public class TAWorkspace extends AppWorkspaceComponent {
 
         // CONTROLS FOR ADDING TAs
         addButton.setOnAction(e -> {
-            controller.handleAddTA();
-            app.getGUI().getAppFileController().markAsEdited(app.getGUI());     // flag as file as been modified
+            boolean added = false;
+            added = controller.handleAddTA();
+            if (added)
+                app.getGUI().getAppFileController().markAsEdited(app.getGUI());     // flag as file as been modified
         });
     }
     

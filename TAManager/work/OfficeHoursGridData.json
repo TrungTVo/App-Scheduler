@@ -44,10 +44,6 @@
             "email":"jamie.kunzmann@stonybrook.edu"
         },
         {
-            "name":"Jenny Li",
-            "email":"jenny.li@stonybrook.edu"
-        },
-        {
             "name":"Jerrel Sogoni",
             "email":"jerrel.sogoni@stonybrook.edu"
         },
@@ -72,38 +68,15 @@
             "email":"serge.crane@stonybrook.edu"
         },
         {
-            "name":"Wonje Kang",
-            "email":"wonje.kang@stonybrook.edu"
-        },
-        {
-            "name":"Wonyong Jeong",
-            "email":"wonyon.jeong@stonybrook.edu"
-        },
-        {
             "name":"Yu Zhao",
             "email":"yu.zhao@stonybrook.edu"
         }
     ],
     "officeHours":[
         {
-            "day":"MONDAY",
-            "time":"10_00am",
-            "name":"Wonje Kang"
-        },
-        {
-            "day":"MONDAY",
-            "time":"10_00am",
-            "name":"Wonyong Jeong"
-        },
-        {
             "day":"WEDNESDAY",
             "time":"10_00am",
             "name":"Calvin Cheng"
-        },
-        {
-            "day":"WEDNESDAY",
-            "time":"10_00am",
-            "name":"Jenny Li"
         },
         {
             "day":"FRIDAY",
@@ -114,16 +87,6 @@
             "day":"FRIDAY",
             "time":"10_00am",
             "name":"Serge Crane"
-        },
-        {
-            "day":"MONDAY",
-            "time":"10_30am",
-            "name":"Wonje Kang"
-        },
-        {
-            "day":"MONDAY",
-            "time":"10_30am",
-            "name":"Wonyong Jeong"
         },
         {
             "day":"TUESDAY",
@@ -136,11 +99,6 @@
             "name":"Calvin Cheng"
         },
         {
-            "day":"WEDNESDAY",
-            "time":"10_30am",
-            "name":"Jenny Li"
-        },
-        {
             "day":"FRIDAY",
             "time":"10_30am",
             "name":"Jamie Kunzmann"
@@ -149,16 +107,6 @@
             "day":"FRIDAY",
             "time":"10_30am",
             "name":"Serge Crane"
-        },
-        {
-            "day":"MONDAY",
-            "time":"11_00am",
-            "name":"Wonje Kang"
-        },
-        {
-            "day":"MONDAY",
-            "time":"11_00am",
-            "name":"Wonyong Jeong"
         },
         {
             "day":"TUESDAY",
@@ -171,11 +119,6 @@
             "name":"Calvin Cheng"
         },
         {
-            "day":"WEDNESDAY",
-            "time":"11_00am",
-            "name":"Jenny Li"
-        },
-        {
             "day":"FRIDAY",
             "time":"11_00am",
             "name":"Jamie Kunzmann"
@@ -184,16 +127,6 @@
             "day":"FRIDAY",
             "time":"11_00am",
             "name":"Serge Crane"
-        },
-        {
-            "day":"MONDAY",
-            "time":"11_30am",
-            "name":"Wonje Kang"
-        },
-        {
-            "day":"MONDAY",
-            "time":"11_30am",
-            "name":"Wonyong Jeong"
         },
         {
             "day":"TUESDAY",
@@ -231,11 +164,6 @@
             "name":"Calvin Cheng"
         },
         {
-            "day":"MONDAY",
-            "time":"12_00pm",
-            "name":"Jenny Li"
-        },
-        {
             "day":"TUESDAY",
             "time":"12_00pm",
             "name":"Robert Trujillo"
@@ -244,6 +172,11 @@
             "day":"TUESDAY",
             "time":"12_00pm",
             "name":"Jerrel Sogoni"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"12_00pm",
+            "name":"Serge Crane"
         },
         {
             "day":"FRIDAY",
@@ -256,11 +189,6 @@
             "name":"Calvin Cheng"
         },
         {
-            "day":"MONDAY",
-            "time":"12_30pm",
-            "name":"Jenny Li"
-        },
-        {
             "day":"TUESDAY",
             "time":"12_30pm",
             "name":"Robert Trujillo"
@@ -268,17 +196,27 @@
         {
             "day":"TUESDAY",
             "time":"12_30pm",
-            "name":"Jerrel Sogoni"
+            "name":"Serge Crane"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"12_30pm",
+            "name":"Milto Ndrenika"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"12_30pm",
+            "name":"Serge Crane"
+        },
+        {
+            "day":"THURSDAY",
+            "time":"12_30pm",
+            "name":"Serge Crane"
         },
         {
             "day":"MONDAY",
             "time":"1_00pm",
             "name":"Calvin Cheng"
-        },
-        {
-            "day":"MONDAY",
-            "time":"1_00pm",
-            "name":"Jenny Li"
         },
         {
             "day":"MONDAY",
@@ -318,12 +256,12 @@
         {
             "day":"MONDAY",
             "time":"1_30pm",
-            "name":"Jenny Li"
+            "name":"Robert Trujillo"
         },
         {
             "day":"MONDAY",
             "time":"1_30pm",
-            "name":"Robert Trujillo"
+            "name":"Jerrel Sogoni"
         },
         {
             "day":"TUESDAY",
@@ -439,6 +377,11 @@
             "day":"WEDNESDAY",
             "time":"3_00pm",
             "name":"Yu Zhao"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"3_00pm",
+            "name":"Jerrel Sogoni"
         },
         {
             "day":"THURSDAY",
