@@ -17,7 +17,7 @@ import tam.workspace.TAWorkspace;
  * to be set by the user via the User Interface and file I/O can set and get
  * all the data from this object
  * 
- * @author Richard McKenna
+ * @author Richard McKenna - Trung Vo
  */
 public class TAData implements AppDataComponent {
 

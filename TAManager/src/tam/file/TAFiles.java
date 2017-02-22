@@ -31,7 +31,7 @@ import tam.data.TeachingAssistant;
  * manager app. It provides all saving and loading 
  * services for the application.
  * 
- * @author Richard McKenna
+ * @author Richard McKenna - Trung Vo
  */
 public class TAFiles implements AppFileComponent {
     // THIS IS THE APP ITSELF

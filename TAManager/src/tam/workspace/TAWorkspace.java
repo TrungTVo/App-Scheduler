@@ -36,7 +36,7 @@ import javafx.beans.property.StringProperty;
  * application. It provides all the user interface controls in 
  * the workspace area.
  * 
- * @author Richard McKenna
+ * @author Richard McKenna - Trung Vo
  */
 public class TAWorkspace extends AppWorkspaceComponent {
     // THIS PROVIDES US WITH ACCESS TO THE APP COMPONENTS

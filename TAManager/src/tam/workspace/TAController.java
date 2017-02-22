@@ -17,7 +17,7 @@ import javafx.beans.property.StringProperty;
  * interactions with the application controls not including the file
  * toolbar.
  * 
- * @author Richard McKenna
+ * @author Richard McKenna - Trung Vo
  * @version 1.0
  */
 public class TAController {

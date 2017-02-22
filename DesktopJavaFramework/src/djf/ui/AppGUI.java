@@ -26,7 +26,7 @@ import static djf.components.AppStyleComponent.CLASS_FILE_BUTTON;
  * including all the file controls, but not including the workspace,
  * which would be customly provided for each app.
  * 
- * @author Richard McKenna
+ * @author Richard McKenna - Trung Vo
  * @version 1.0
  */
 public class AppGUI {

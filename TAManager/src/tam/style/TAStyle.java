@@ -13,7 +13,7 @@ import javafx.scene.layout.Pane;
 /**
  * This class manages all CSS style for this application.
  * 
- * @author Richard McKenna
+ * @author Richard McKenna - Trung Vo
  * @version 1.0
  */
 public class TAStyle extends AppStyleComponent {
