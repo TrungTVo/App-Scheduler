@@ -323,6 +323,7 @@ public class AppFileController {
                 
                 // AND MAKE SURE THE FILE BUTTONS ARE PROPERLY ENABLED
                 saved = true;
+                currentWorkFile = selectedFile;
                 app.getGUI().updateToolbarControls(saved);
             } catch (Exception e) {
                 AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
