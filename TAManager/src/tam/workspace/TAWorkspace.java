@@ -373,10 +373,8 @@ public class TAWorkspace extends AppWorkspaceComponent {
         taTable.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
             // IS A TA SELECTED IN THE TABLE?
             Object selectedItem = taTable.getSelectionModel().getSelectedItem();
-            System.out.println(selectedItem);
             if (selectedItem != null){
                 TeachingAssistant ta = (TeachingAssistant)selectedItem;
-                System.out.println("Deleted "+ta.getName());
                 if (ev.getCode() == KeyCode.BACK_SPACE){
                     controller.handleDeleteTAfromTable(ta);
                     app.getGUI().getAppFileController().markAsEdited(app.getGUI());         // flag as file has been modified
