@@ -2,4 +2,5 @@
 DesktopJavaFramework/DesktopJavaFramework/build/*
 PropertiesManager/PropertiesManager/build/*
 TAManager/work/*
+TAManager/nbproject/*
 TAManager/TAManager/build/*
