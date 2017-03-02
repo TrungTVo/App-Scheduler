@@ -362,8 +362,10 @@ public class TAWorkspace extends AppWorkspaceComponent {
         // CONTROLS FOR TOGGLING TA OFFICE HOURS
         for (Pane p : officeHoursGridTACellPanes.values()) {
             p.setOnMouseClicked(e -> {
-                controller.handleCellToggle((Pane) e.getSource());
-                app.getGUI().getAppFileController().markAsEdited(app.getGUI());     // flag as file has been modified
+                boolean toggled = false;
+                toggled = controller.handleCellToggle((Pane) e.getSource());
+                if (toggled)
+                    app.getGUI().getAppFileController().markAsEdited(app.getGUI());     // flag as file has been modified
             });
         }
         

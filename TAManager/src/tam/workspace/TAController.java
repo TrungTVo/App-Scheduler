@@ -94,7 +94,7 @@ public class TAController {
      * 
      * @param pane The pane that was toggled.
      */
-    public void handleCellToggle(Pane pane) {
+    public boolean handleCellToggle(Pane pane) {
         // GET THE TABLE
         TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
         TableView taTable = workspace.getTATable();
@@ -103,12 +103,17 @@ public class TAController {
         Object selectedItem = taTable.getSelectionModel().getSelectedItem();
         // GET THE TA
         TeachingAssistant ta = (TeachingAssistant)selectedItem;
-        String taName = ta.getName();
-        TAData data = (TAData)app.getDataComponent();
-        String cellKey = pane.getId();
-        
-        // AND TOGGLE THE OFFICE HOURS IN THE CLICKED CELL
-        data.toggleTAOfficeHours(cellKey, taName);
+        if (ta != null){
+            String taName = ta.getName();
+            TAData data = (TAData)app.getDataComponent();
+            String cellKey = pane.getId();
+
+            // AND TOGGLE THE OFFICE HOURS IN THE CLICKED CELL
+            data.toggleTAOfficeHours(cellKey, taName);
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public void handleDeleteTAfromTable(TeachingAssistant ta) {
