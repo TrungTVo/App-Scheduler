@@ -114,7 +114,8 @@ public class TAStyle extends AppStyleComponent {
         // hover effect
         for (Pane pane:workspaceComponent.getOfficeHoursGridTACellPanes().values()){
             pane.setOnMouseEntered(e -> {
-                pane.setStyle("-fx-background-color: #ffff00");
+                pane.setStyle("-fx-background-color: #ffff00; -fx-border-width: 2px; -fx-border-color: white");
+                //pane.setStyle("-fx-border-width: 2px");
                 String cellKey = workspaceComponent.getCellKey(pane);
                 String[] rowCol = cellKey.split("_");           // [0]-col; [1]-row
                 workspaceComponent.getOfficeHoursGridTimeCellPanes().get("0_"+rowCol[1]).setStyle("-fx-background-color: #87CEEB");
@@ -124,7 +125,8 @@ public class TAStyle extends AppStyleComponent {
                 highlightAboveTargetCell(workspaceComponent, rowCol[0], rowCol[1], "#F0E68C");
             });
             pane.setOnMouseExited(e -> {
-                pane.setStyle("-fx-background-color: #BDB76B");
+                pane.setStyle("-fx-background-color: #BDB76B; -fx-border-width: 0.5px; -fx-border-color: black");
+                //pane.setStyle("-fx-border-width: 0.5px");
                 String cellKey = workspaceComponent.getCellKey(pane);
                 String[] rowCol = cellKey.split("_");           // [0]-col; [1]-row
                 workspaceComponent.getOfficeHoursGridTimeCellPanes().get("0_"+rowCol[1]).setStyle("-fx-background-color: #0000ff");
