@@ -121,8 +121,9 @@ public class TAController {
         TAData data = (TAData)app.getDataComponent();
         for (String cellKey:data.getOfficeHours().keySet()){
             StringProperty cellText = data.getOfficeHours().get(cellKey);
-            if (cellText.getValue().contains(taName))
+            if (data.isCellPaneHasTAName(cellText.getValue(), taName)){
                 data.removeTAFromCell(cellText, taName, cellKey);
+            }
         }
         data.getTeachingAssistants().remove(ta);
     }

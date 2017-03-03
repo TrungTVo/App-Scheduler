@@ -257,12 +257,22 @@ public class TAData implements AppDataComponent {
     public void toggleTAOfficeHours(String cellKey, String taName) {
         StringProperty cellProp = officeHours.get(cellKey);
         String cellText = cellProp.getValue();
-        if (!cellText.contains(taName)){
+        if (!isCellPaneHasTAName(cellText, taName)){
             cellProp.setValue(cellText + "\n" + taName);
             officeHours.put(cellKey, cellProp);
         } else {
             removeTAFromCell(cellProp, taName, cellKey);
         }
+    }
+    
+    // helper method to check if TA's name in the TA cell pane or not
+    public boolean isCellPaneHasTAName(String cellText, String taName){
+        String[] nameList = cellText.split("\n");
+        for (String item:nameList){
+            if (item.trim().equals(taName))
+                return true;
+        }
+        return false;
     }
     
     /**
@@ -273,19 +283,24 @@ public class TAData implements AppDataComponent {
         // GET THE CELL TEXT
         String cellText = cellProp.getValue();
         // IS IT THE ONLY TA IN THE CELL?
-        if (cellText.equals(taName)) {
+        if (cellText.equals("\n"+taName)) {
             cellProp.setValue("");
-        }
-        // IS IT THE FIRST TA IN A CELL WITH MULTIPLE TA'S?
-        else if (cellText.indexOf(taName) == 0) {
-            int startIndex = cellText.indexOf("\n",2);
-            cellText = cellText.substring(startIndex);
-            cellProp.setValue(cellText);
-        }
-        // IT MUST BE ANOTHER TA IN THE CELL
-        else {
-            int startIndex = cellText.indexOf("\n" + taName);
-            cellText = cellText.substring(0, startIndex) + cellText.substring(startIndex+1+taName.length());
+        } else {
+            int i = 0;
+            int startIndex, index;
+            do {
+                startIndex = cellText.indexOf("\n"+taName, i);
+                index = startIndex+1+taName.length();
+                if (index < cellText.length() && cellText.charAt(index) != '\n' ){
+                    System.out.println(cellText.charAt(index));
+                    i++;
+                }
+            } while (index < cellText.length() && cellText.charAt(index) != '\n' );
+            
+            if (index < cellText.length())
+                cellText = cellText.substring(0, startIndex) + cellText.substring(index);
+            else
+                cellText = cellText.substring(0, startIndex);
             cellProp.setValue(cellText);
         }
         officeHours.put(cellKey, cellProp);

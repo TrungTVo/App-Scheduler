@@ -379,12 +379,12 @@ public class TAWorkspace extends AppWorkspaceComponent {
             Object selectedItem = taTable.getSelectionModel().getSelectedItem();
             if (selectedItem != null){
                 TeachingAssistant ta = (TeachingAssistant)selectedItem;
-                if (ev.getCode() == KeyCode.BACK_SPACE){
+                if (ev.getCode() == KeyCode.BACK_SPACE || ev.getCode() == KeyCode.DELETE){
                     controller.handleDeleteTAfromTable(ta);
                     app.getGUI().getAppFileController().markAsEdited(app.getGUI());         // flag as file has been modified
+                    taTable.getSelectionModel().clearSelection();                           // clear selected item
                 }
             }
-            taTable.getSelectionModel().clearSelection();
         });
         
         // AND MAKE SURE ALL THE COMPONENTS HAVE THE PROPER STYLE
