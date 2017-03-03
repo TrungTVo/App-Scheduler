@@ -11,6 +11,8 @@ import tam.data.TAData;
 import tam.data.TeachingAssistant;
 import tam.workspace.TAWorkspace;
 import javafx.beans.property.StringProperty;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class provides responses to all workspace interactions, meaning
@@ -21,6 +23,11 @@ import javafx.beans.property.StringProperty;
  * @version 1.0
  */
 public class TAController {
+    private Pattern pattern;
+    private Matcher matcher;
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+		+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    
     // THE APP PROVIDES ACCESS TO OTHER COMPONENTS AS NEEDED
     TAManagerApp app;
 
@@ -74,18 +81,31 @@ public class TAController {
         }
         // EVERYTHING IS FINE, ADD A NEW TA
         else {
-            // ADD THE NEW TA TO THE DATA
-            data.addTA(name, email);
-            
-            // CLEAR THE TEXT FIELDS
-            nameTextField.setText("");
-            emailTextField.setText("");
-            
-            // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
-            nameTextField.requestFocus();
-            emailTextField.requestFocus();
-            return true;
+            if (isValidEmail(email)) {
+                // ADD THE NEW TA TO THE DATA
+                data.addTA(name, email);
+
+                // CLEAR THE TEXT FIELDS
+                nameTextField.setText("");
+                emailTextField.setText("");
+
+                // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
+                nameTextField.requestFocus();
+                emailTextField.requestFocus();
+                return true;
+            } else {
+                AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+                dialog.show("Invalid email format", "Please enter a valid email address.");
+                return false;
+            }
         }
+    }
+    
+    // helper method to validate Email's string
+    public boolean isValidEmail(String email){
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     /**
