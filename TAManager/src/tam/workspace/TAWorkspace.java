@@ -61,6 +61,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
     TextField nameTextField;
     TextField emailTextField;
     Button addButton;
+    Button clearButton;
 
     // THE HEADER ON THE RIGHT
     HBox officeHoursHeaderBox;
@@ -123,15 +124,18 @@ public class TAWorkspace extends AppWorkspaceComponent {
         emailTextField = new TextField();
         emailTextField.setPromptText(emailPrompText);
         addButton = new Button(addButtonText);
+        clearButton = new Button("Clear");
         addBox = new HBox();
         nameTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.4));
         emailTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.4));
         nameTextField.prefHeightProperty().bind(addBox.heightProperty().multiply(1));
         emailTextField.prefHeightProperty().bind(addBox.heightProperty().multiply(1));
         addButton.prefWidthProperty().bind(addBox.widthProperty().multiply(.2));
+        clearButton.prefWidthProperty().bind(addBox.widthProperty().multiply(.2));
         addBox.getChildren().add(nameTextField);
         addBox.getChildren().add(emailTextField);
         addBox.getChildren().add(addButton);
+        addBox.getChildren().add(clearButton);
 
         // INIT THE HEADER ON THE RIGHT
         officeHoursHeaderBox = new HBox();
@@ -231,6 +235,10 @@ public class TAWorkspace extends AppWorkspaceComponent {
 
     public Button getAddButton() {
         return addButton;
+    }
+    
+    public Button getClearButton() {
+        return clearButton;
     }
 
     public HBox getOfficeHoursSubheaderBox() {

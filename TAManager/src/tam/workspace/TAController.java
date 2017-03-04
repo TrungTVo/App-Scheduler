@@ -97,14 +97,12 @@ public class TAController {
                         // CLEAR THE TEXT FIELDS
                         nameTextField.setText("");
                         emailTextField.setText("");
-
-                        // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
-                        nameTextField.requestFocus();
-                        emailTextField.requestFocus();
                     } else {            // if current mode is Edit TA
                         data.getTeachingAssistants().remove((TeachingAssistant)data.getTeachingAssistants().get(indexOfOldTA));
                         data.addTA(name, email);
                     }
+                    // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
+                    nameTextField.requestFocus();
                     return true;
                 } else {
                     AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();

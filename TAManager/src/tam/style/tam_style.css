@@ -84,6 +84,13 @@
   -fx-background-radius: 10 10 10 10;    
 }
 
+.clear_ta_button{
+    -fx-font-size: 14pt;
+    -fx-font-weight: bold;
+  -fx-border-radius: 10 10 10 10;
+  -fx-background-radius: 10 10 10 10;
+}
+
 .office_hours_grid{
     
 }

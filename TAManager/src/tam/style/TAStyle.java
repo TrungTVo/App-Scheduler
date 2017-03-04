@@ -32,6 +32,7 @@ public class TAStyle extends AppStyleComponent {
     public static String CLASS_ADD_TA_PANE = "add_ta_pane";
     public static String CLASS_ADD_TA_TEXT_FIELD = "add_ta_text_field";
     public static String CLASS_ADD_TA_BUTTON = "add_ta_button";
+    public static String CLASS_CLEAR_TA_BUTOON = "clear_ta_button";
 
     // ON THE RIGHT WE HAVE THE OFFICE HOURS GRID
     public static String CLASS_OFFICE_HOURS_GRID = "office_hours_grid";
@@ -87,6 +88,7 @@ public class TAStyle extends AppStyleComponent {
         workspaceComponent.getAddBox().getStyleClass().add(CLASS_ADD_TA_PANE);
         workspaceComponent.getNameTextField().getStyleClass().add(CLASS_ADD_TA_TEXT_FIELD);
         workspaceComponent.getAddButton().getStyleClass().add(CLASS_ADD_TA_BUTTON);
+        workspaceComponent.getClearButton().getStyleClass().add(CLASS_CLEAR_TA_BUTOON);
 
         // RIGHT SIDE - THE HEADER
         workspaceComponent.getOfficeHoursSubheaderBox().getStyleClass().add(CLASS_HEADER_PANE);
