@@ -213,8 +213,8 @@ public class TAData implements AppDataComponent {
         }
     }
 
-    public boolean containsTA(String testName) {
-        for (TeachingAssistant ta : teachingAssistants) {
+    public boolean containsTA(String testName, ObservableList<TeachingAssistant> listTAs) {
+        for (TeachingAssistant ta : listTAs) {
             if (ta.getName().equals(testName)) {
                 return true;
             }
@@ -222,8 +222,8 @@ public class TAData implements AppDataComponent {
         return false;
     }
     
-    public boolean containsTAEmail(String taEmail){
-        for (TeachingAssistant ta : teachingAssistants) {
+    public boolean containsTAEmail(String taEmail, ObservableList<TeachingAssistant> listTAs){
+        for (TeachingAssistant ta : listTAs) {
             if (ta.getEmail().equals(taEmail)) {
                 return true;
             }
@@ -236,12 +236,20 @@ public class TAData implements AppDataComponent {
         TeachingAssistant ta = new TeachingAssistant(initName, initEmail);
 
         // ADD THE TA
-        if (!containsTA(initName)) {
+        if (!containsTA(initName, teachingAssistants)) {
             teachingAssistants.add(ta);
         }
 
         // SORT THE TAS
         Collections.sort(teachingAssistants);
+    }
+    
+    public ObservableList<TeachingAssistant> clone(ObservableList<TeachingAssistant> oldList){
+        ObservableList<TeachingAssistant> newList = FXCollections.observableArrayList();
+        for (TeachingAssistant ta:oldList){
+            newList.add(ta);
+        }
+        return newList;
     }
 
     public void addOfficeHoursReservation(String day, String time, String taName) {

@@ -13,6 +13,8 @@ import tam.workspace.TAWorkspace;
 import javafx.beans.property.StringProperty;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * This class provides responses to all workspace interactions, meaning
@@ -27,6 +29,8 @@ public class TAController {
     private Matcher matcher;
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 		+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private ObservableList<TeachingAssistant> listExcludeOldTA;            // In EditTA mode, for checking if current edited TA already contained in the list or not
+    private int indexOfOldTA;                            // In EditTA mode, for retrieving index of current edited TA in the list
     
     // THE APP PROVIDES ACCESS TO OTHER COMPONENTS AS NEEDED
     TAManagerApp app;
@@ -37,6 +41,7 @@ public class TAController {
     public TAController(TAManagerApp initApp) {
         // KEEP THIS FOR LATER
         app = initApp;
+        listExcludeOldTA = FXCollections.observableArrayList();
     }
     
     /**
@@ -68,35 +73,44 @@ public class TAController {
             AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
             dialog.show(props.getProperty(MISSING_TA_EMAIL_TITLE), props.getProperty(MISSING_TA_EMAIL_MESSAGE));
             return false;
-        }
-        // DOES A TA ALREADY HAVE THE SAME NAME OR EMAIL?
-        else if (data.containsTA(name)) {
-	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
-	    dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));                                    
-            return false;
-        } else if (data.containsTAEmail(email)){
-            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
-	    dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));
-            return false;
-        }
-        // EVERYTHING IS FINE, ADD A NEW TA
-        else {
-            if (isValidEmail(email)) {
-                // ADD THE NEW TA TO THE DATA
-                data.addTA(name, email);
-
-                // CLEAR THE TEXT FIELDS
-                nameTextField.setText("");
-                emailTextField.setText("");
-
-                // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
-                nameTextField.requestFocus();
-                emailTextField.requestFocus();
-                return true;
-            } else {
+        } else {
+            if (workspace.getAddButton().getText().equals("Add TA"))
+                listExcludeOldTA = data.clone(data.getTeachingAssistants());
+                
+            // DOES A TA ALREADY HAVE THE SAME NAME OR EMAIL?
+            if (data.containsTA(name, listExcludeOldTA)) {
                 AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
-                dialog.show("Invalid email format", "Please enter a valid email address.");
+                dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));                                    
                 return false;
+            } else if (data.containsTAEmail(email, listExcludeOldTA)){
+                AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+                dialog.show(props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_TITLE), props.getProperty(TA_NAME_AND_EMAIL_NOT_UNIQUE_MESSAGE));
+                return false;
+            }
+            // EVERYTHING IS FINE, ADD A NEW TA
+            else {
+                if (isValidEmail(email)) {
+                    if (workspace.getAddButton().getText().equals("Add TA")){
+                        // ADD THE NEW TA TO THE DATA
+                        data.addTA(name, email);
+
+                        // CLEAR THE TEXT FIELDS
+                        nameTextField.setText("");
+                        emailTextField.setText("");
+
+                        // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
+                        nameTextField.requestFocus();
+                        emailTextField.requestFocus();
+                    } else {            // if current mode is Edit TA
+                        data.getTeachingAssistants().remove((TeachingAssistant)data.getTeachingAssistants().get(indexOfOldTA));
+                        data.addTA(name, email);
+                    }
+                    return true;
+                } else {
+                    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+                    dialog.show("Invalid email format", "Please enter a valid email address.");
+                    return false;
+                }
             }
         }
     }
@@ -107,7 +121,41 @@ public class TAController {
         matcher = pattern.matcher(email);
         return matcher.matches();
     }
-
+    
+    // HANDLE EDIT TA FROM TEXTFIELD
+    public boolean handleEditTA(TeachingAssistant ta, String oldName, String oldEmail){
+        TAData data = (TAData)app.getDataComponent();
+        TAWorkspace workspace = (TAWorkspace) app.getWorkspaceComponent();
+        String nameToUpdate = workspace.getNameTextField().getText();
+        
+        // create a list of TAs excluding old TA, for testing if new edited TA is contained in the list or not
+        indexOfOldTA = data.getTeachingAssistants().indexOf(ta);
+        listExcludeOldTA.clear();
+        listExcludeOldTA.addAll(data.getTeachingAssistants().subList(0, indexOfOldTA));
+        listExcludeOldTA.addAll(data.getTeachingAssistants().subList(indexOfOldTA+1, data.getTeachingAssistants().size()));
+        
+        boolean edited = handleAddTA();               // then edit it
+        if (edited){
+            StringBuilder cellTextStr;
+            for (String cellKey:data.getOfficeHours().keySet()){
+                StringProperty cellText = data.getOfficeHours().get(cellKey);
+                cellTextStr = new StringBuilder(cellText.getValue());
+                if (data.isCellPaneHasTAName(cellTextStr.toString(), oldName)){
+                    cellText.setValue(cellTextStr.toString().replaceAll(oldName, nameToUpdate));
+                    data.getOfficeHours().put(cellKey, cellText);
+                }
+            }
+        } else {                // if there is an error occured while editing, set TA Object back to old ones with old name & email
+            ta.setName(oldName);
+            ta.setEmail(oldEmail);
+        }
+        workspace.getNameTextField().clear();
+        workspace.getEmailTextField().clear();
+        workspace.getAddButton().setText("Add TA");
+        workspace.getTATable().getSelectionModel().clearSelection();
+        return edited;
+    }
+    
     /**
      * This function provides a response for when the user clicks
      * on the office hours grid to add or remove a TA to a time slot.
@@ -146,5 +194,9 @@ public class TAController {
             }
         }
         data.getTeachingAssistants().remove(ta);
+        TAWorkspace workspace = (TAWorkspace) app.getWorkspaceComponent();
+        workspace.getNameTextField().clear();
+        workspace.getEmailTextField().clear();
+        workspace.getAddButton().setText("Add TA");
     }
 }
