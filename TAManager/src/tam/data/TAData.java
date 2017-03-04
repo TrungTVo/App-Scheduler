@@ -269,7 +269,7 @@ public class TAData implements AppDataComponent {
             cellProp.setValue(cellText + "\n" + taName);
             officeHours.put(cellKey, cellProp);
         } else {
-            removeTAFromCell(cellProp, taName, cellKey);
+            removeTAFromCell(cellProp, taName, null, false, cellKey);
         }
     }
     
@@ -287,12 +287,15 @@ public class TAData implements AppDataComponent {
      * This method removes taName from the office grid cell
      * represented by cellProp.
      */
-    public void removeTAFromCell(StringProperty cellProp, String taName, String cellKey) {
+    public void removeTAFromCell(StringProperty cellProp, String taName, String nameToUpdate, boolean edited, String cellKey) {
         // GET THE CELL TEXT
         String cellText = cellProp.getValue();
         // IS IT THE ONLY TA IN THE CELL?
         if (cellText.equals("\n"+taName)) {
             cellProp.setValue("");
+            if (edited){
+                cellProp.setValue("\n"+nameToUpdate);
+            }
         } else {
             int i = 0;
             int startIndex, index;
@@ -300,16 +303,28 @@ public class TAData implements AppDataComponent {
                 startIndex = cellText.indexOf("\n"+taName, i);
                 index = startIndex+1+taName.length();
                 if (index < cellText.length() && cellText.charAt(index) != '\n' ){
-                    System.out.println(cellText.charAt(index));
                     i++;
                 }
             } while (index < cellText.length() && cellText.charAt(index) != '\n' );
             
-            if (index < cellText.length())
+            StringBuilder newText = new StringBuilder();
+            if (index < cellText.length()){
                 cellText = cellText.substring(0, startIndex) + cellText.substring(index);
-            else
+                if (edited){
+                    newText = new StringBuilder(cellText);
+                    newText.insert(startIndex, "\n"+nameToUpdate);
+                }
+            } else {
                 cellText = cellText.substring(0, startIndex);
-            cellProp.setValue(cellText);
+                if (edited){
+                    newText = new StringBuilder(cellText);
+                    newText.append("\n"+nameToUpdate);
+                }
+            }
+            if (!edited)
+                cellProp.setValue(cellText);
+            else
+                cellProp.setValue(newText.toString());
         }
         officeHours.put(cellKey, cellProp);
     }

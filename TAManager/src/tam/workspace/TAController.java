@@ -141,8 +141,7 @@ public class TAController {
                 StringProperty cellText = data.getOfficeHours().get(cellKey);
                 cellTextStr = new StringBuilder(cellText.getValue());
                 if (data.isCellPaneHasTAName(cellTextStr.toString(), oldName)){
-                    cellText.setValue(cellTextStr.toString().replaceAll(oldName, nameToUpdate));
-                    data.getOfficeHours().put(cellKey, cellText);
+                    data.removeTAFromCell(cellText, oldName, nameToUpdate, edited, cellKey);
                 }
             }
         } else {                // if there is an error occured while editing, set TA Object back to old ones with old name & email
@@ -190,7 +189,7 @@ public class TAController {
         for (String cellKey:data.getOfficeHours().keySet()){
             StringProperty cellText = data.getOfficeHours().get(cellKey);
             if (data.isCellPaneHasTAName(cellText.getValue(), taName)){
-                data.removeTAFromCell(cellText, taName, cellKey);
+                data.removeTAFromCell(cellText, taName, null, false, cellKey);
             }
         }
         data.getTeachingAssistants().remove(ta);
