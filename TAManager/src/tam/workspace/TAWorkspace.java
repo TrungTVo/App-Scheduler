@@ -202,6 +202,21 @@ public class TAWorkspace extends AppWorkspaceComponent {
             if (added || edited)
                 app.getGUI().getAppFileController().markAsEdited(app.getGUI());     // flag as file as been modified
         });
+        
+        // CONTROL FOR CLEAR BUTTON
+        clearButton.setOnAction(e -> {
+            if (addButton.getText().equals("Edit TA")){
+                nameTextField.clear();
+                emailTextField.clear();
+                addButton.setText("Add TA");
+                // Get the table
+                TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
+                TableView taTable = workspace.getTATable();
+                taTable.getSelectionModel().clearSelection();
+                // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
+                nameTextField.requestFocus();
+            }
+        });
     }
     
     
