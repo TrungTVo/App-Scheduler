@@ -31,6 +31,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import java.util.*;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.scene.control.ComboBox;
+import javafx.scene.layout.FlowPane;
 /**
  * This class serves as the workspace component for the TA Manager
  * application. It provides all the user interface controls in 
@@ -66,6 +69,12 @@ public class TAWorkspace extends AppWorkspaceComponent {
     // THE HEADER ON THE RIGHT
     HBox officeHoursHeaderBox;
     Label officeHoursHeaderLabel;
+    Label startTimeLabel;
+    Label endTimeLabel;
+    ComboBox startBox;
+    ComboBox endBox;
+    HBox startWrap;
+    HBox endWrap;
     
     // THE OFFICE HOURS GRID
     GridPane officeHoursGridPane;
@@ -162,6 +171,23 @@ public class TAWorkspace extends AppWorkspaceComponent {
         VBox rightPane = new VBox();
         rightPane.getChildren().add(officeHoursHeaderBox);
         rightPane.getChildren().add(officeHoursGridPane);
+        
+        // ADD COMBO BOXES
+        TAData taData = (TAData)app.getDataComponent();
+        ObservableList<String> hoursList = taData.generateStartEndTimeList(0, true);
+        startBox = new ComboBox(hoursList);
+        endBox = new ComboBox(hoursList);
+        startTimeLabel = new Label("Start time:");
+        endTimeLabel = new Label("End time:");
+        startWrap = new HBox(startTimeLabel);
+        startWrap.getChildren().add(startBox);
+        startWrap.setAlignment(Pos.CENTER);
+        endWrap = new HBox(endTimeLabel);
+        endWrap.getChildren().add(endBox);
+        endWrap.setAlignment(Pos.CENTER);
+        officeHoursHeaderBox.getChildren().add(startWrap);
+        officeHoursHeaderBox.getChildren().add(endWrap);
+        officeHoursHeaderBox.setAlignment(Pos.CENTER_LEFT);
         
         // BOTH PANES WILL NOW GO IN A SPLIT PANE
         SplitPane sPane = new SplitPane(leftPane, new ScrollPane(rightPane));
@@ -262,6 +288,30 @@ public class TAWorkspace extends AppWorkspaceComponent {
 
     public Label getOfficeHoursSubheaderLabel() {
         return officeHoursHeaderLabel;
+    }
+    
+    public Label getStartTimeLabel(){
+        return startTimeLabel;
+    }
+    
+    public Label getEndTimeLabel(){
+        return endTimeLabel;
+    }
+    
+    public ComboBox getStartBox(){
+        return startBox;
+    }
+    
+    public ComboBox getEndBox(){
+        return endBox;
+    }
+    
+    public HBox getStartWrapBox(){
+        return startWrap;
+    }
+    
+    public HBox getEndWrapBox(){
+        return endWrap;
     }
 
     public GridPane getOfficeHoursGridPane() {

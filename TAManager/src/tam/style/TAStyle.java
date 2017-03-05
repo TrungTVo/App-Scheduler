@@ -25,6 +25,12 @@ public class TAStyle extends AppStyleComponent {
     // THESE ARE THE HEADERS FOR EACH SIDE
     public static String CLASS_HEADER_PANE = "header_pane";
     public static String CLASS_HEADER_LABEL = "header_label";
+    public static String CLASS_STARTTIME_LABEL = "startTime_label";
+    public static String CLASS_ENDTIME_LABEL = "endTime_label";
+    public static String CLASS_START_BOX = "startBox";
+    public static String CLASS_END_BOX = "endBox";
+    public static String CLASS_START_WRAP_BOX = "startWrapBox";
+    public static String CLASS_END_WRAP_BOX = "endWrapBox";
 
     // ON THE LEFT WE HAVE THE TA ENTRY
     public static String CLASS_TA_TABLE = "ta_table";
@@ -93,6 +99,12 @@ public class TAStyle extends AppStyleComponent {
         // RIGHT SIDE - THE HEADER
         workspaceComponent.getOfficeHoursSubheaderBox().getStyleClass().add(CLASS_HEADER_PANE);
         workspaceComponent.getOfficeHoursSubheaderLabel().getStyleClass().add(CLASS_HEADER_LABEL);
+        workspaceComponent.getStartTimeLabel().getStyleClass().add(CLASS_STARTTIME_LABEL);
+        workspaceComponent.getEndTimeLabel().getStyleClass().add(CLASS_ENDTIME_LABEL);
+        workspaceComponent.getStartBox().getStyleClass().add(CLASS_START_BOX);
+        workspaceComponent.getEndBox().getStyleClass().add(CLASS_END_BOX);
+        workspaceComponent.getStartWrapBox().getStyleClass().add(CLASS_START_WRAP_BOX);
+        workspaceComponent.getEndWrapBox().getStyleClass().add(CLASS_END_WRAP_BOX);
     }
     
     /**
@@ -116,7 +128,7 @@ public class TAStyle extends AppStyleComponent {
         // hover effect
         for (Pane pane:workspaceComponent.getOfficeHoursGridTACellPanes().values()){
             pane.setOnMouseEntered(e -> {
-                pane.setStyle("-fx-background-color: #ffff00; -fx-border-width: 2px; -fx-border-color: white");
+                pane.setStyle("-fx-background-color: #ffff00; -fx-border-width: 2px; -fx-border-color: blue");
                 //pane.setStyle("-fx-border-width: 2px");
                 String cellKey = workspaceComponent.getCellKey(pane);
                 String[] rowCol = cellKey.split("_");           // [0]-col; [1]-row

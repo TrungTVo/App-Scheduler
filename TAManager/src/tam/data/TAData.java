@@ -75,10 +75,10 @@ public class TAData implements AppDataComponent {
         // THESE ARE THE LANGUAGE-DEPENDENT OFFICE HOURS GRID HEADERS
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         ArrayList<String> timeHeaders = props.getPropertyOptionsList(TAManagerProp.OFFICE_HOURS_TABLE_HEADERS);
-        ArrayList<String> dowHeaders = props.getPropertyOptionsList(TAManagerProp.DAYS_OF_WEEK);
+        ArrayList<String> dayHeaders = props.getPropertyOptionsList(TAManagerProp.DAYS_OF_WEEK);
         gridHeaders = new ArrayList();
         gridHeaders.addAll(timeHeaders);
-        gridHeaders.addAll(dowHeaders);
+        gridHeaders.addAll(dayHeaders);
     }
     
     /**
@@ -127,7 +127,19 @@ public class TAData implements AppDataComponent {
     public int getNumRows() {
         return ((endHour - startHour) * 2) + 1;
     }
-
+    
+    // generate a lsit of start & end time for combo boxes
+    public ObservableList<String> generateStartEndTimeList(int startTime, boolean onHour){
+        ObservableList<String> res = FXCollections.observableArrayList();
+        for (int i=1; i<=48; i++){
+            res.add(getTimeString(startTime, onHour));
+            onHour = !onHour;
+            if (onHour)
+                startTime++;
+        }
+        return res;
+    }
+    
     public String getTimeString(int militaryHour, boolean onHour) {
         String minutesText = "00";
         if (!onHour) {
