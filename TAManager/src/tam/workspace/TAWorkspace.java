@@ -75,6 +75,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
     ComboBox endBox;
     HBox startWrap;
     HBox endWrap;
+    Button update;
     
     // THE OFFICE HOURS GRID
     GridPane officeHoursGridPane;
@@ -187,6 +188,8 @@ public class TAWorkspace extends AppWorkspaceComponent {
         endWrap.setAlignment(Pos.CENTER);
         officeHoursHeaderBox.getChildren().add(startWrap);
         officeHoursHeaderBox.getChildren().add(endWrap);
+        update = new Button("Update");
+        officeHoursHeaderBox.getChildren().add(update);
         officeHoursHeaderBox.setAlignment(Pos.CENTER_LEFT);
         
         // BOTH PANES WILL NOW GO IN A SPLIT PANE
