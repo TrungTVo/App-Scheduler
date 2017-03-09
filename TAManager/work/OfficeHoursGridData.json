@@ -1,6 +1,6 @@
 
 {
-    "startHour":"9",
+    "startHour":"8",
     "endHour":"20",
     "undergrad_tas":[
         {
@@ -73,6 +73,21 @@
         }
     ],
     "officeHours":[
+        {
+            "day":"MONDAY",
+            "time":"8_00am",
+            "name":"Jerrel Sogoni"
+        },
+        {
+            "day":"TUESDAY",
+            "time":"8_00am",
+            "name":"Jerrel Sogoni"
+        },
+        {
+            "day":"MONDAY",
+            "time":"9_00am",
+            "name":"Jacob Evans"
+        },
         {
             "day":"WEDNESDAY",
             "time":"10_00am",

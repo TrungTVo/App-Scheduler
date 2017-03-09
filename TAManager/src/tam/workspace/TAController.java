@@ -181,13 +181,14 @@ public class TAController {
         }
     }
     
-    public void handleDeleteTAfromTable(TeachingAssistant ta) {
+    public void handleDeleteTAfromTable(TAData data, TeachingAssistant ta) {
         String taName = ta.getName();
-        TAData data = (TAData)app.getDataComponent();
         for (String cellKey:data.getOfficeHours().keySet()){
             StringProperty cellText = data.getOfficeHours().get(cellKey);
-            if (data.isCellPaneHasTAName(cellText.getValue(), taName)){
-                data.removeTAFromCell(cellText, taName, null, false, cellKey);
+            if (cellText != null) {
+                if (data.isCellPaneHasTAName(cellText.getValue(), taName)) {
+                    data.removeTAFromCell(cellText, taName, null, false, cellKey);
+                }
             }
         }
         data.getTeachingAssistants().remove(ta);

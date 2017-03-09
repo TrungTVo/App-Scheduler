@@ -269,6 +269,8 @@ public class TAWorkspace extends AppWorkspaceComponent {
                 int endIndex = endBox.getSelectionModel().getSelectedIndex();
                 System.out.println("End time: " + endTime + String.valueOf(", index: "+endIndex));
             }
+            startBox.getSelectionModel().clearSelection();
+            endBox.getSelectionModel().clearSelection();
         });
     }
     
@@ -296,11 +298,57 @@ public class TAWorkspace extends AppWorkspaceComponent {
             dialog.show("Invalid time frame!", "Start Time must be different from current End Time.");
         } else {
             int differenceBetweenNewAndCurrentStartTime = compareHour(actualStartHour, newStartMin, taData.getStartHour(), taData.getStartMin());
-            if (differenceBetweenNewAndCurrentStartTime < 0){
+            if (differenceBetweenNewAndCurrentStartTime < 0){           // if new start Time is before current start Time
                 newStartBeforeCurrentStart(taData, actualStartHour);
+            } else if (differenceBetweenNewAndCurrentStartTime > 0) {           // or if new start Time is after current start Time
+                newStartTimeAfterCurrentStart(taData, actualStartHour);
             }
-            
         }
+    }
+    
+    public void newStartTimeAfterCurrentStart(TAData taData, int actualStartHour){
+        int differenceBetweenNewAndCurrentTime = (int)differenceBetweenNewAndCurrentTime(taData.getStartHour(), taData.getStartMin(), actualStartHour);
+        differenceBetweenNewAndCurrentTime = Math.abs(differenceBetweenNewAndCurrentTime);
+        
+        int sizeOfOldGrid = (int)taData.differenceRowsBetweenStartAndEnd()+1;
+        updatingTime = true;
+        taData.setStartHour(actualStartHour);
+        taData.setStartMin("00");
+        
+        HashMap<String, StringProperty> clonedOfficeHours = cloneOfficeHours(taData.getOfficeHours());
+        taData.getOfficeHours().clear();
+        
+        boolean cellRemovedOverload = false;        // flag when number of rows removed is too much compare to the number of rows after removal
+        // RESET HOURS FOR THE REMOVED ROWS
+        for (int i=1; i <= differenceBetweenNewAndCurrentTime; i++){
+            for (int col=2; col<7; col++){
+                String cellKey = taData.getCellKey(col, i);
+                String cellKeyFromClonedList = String.valueOf(col)+"_"+String.valueOf(i+differenceBetweenNewAndCurrentTime);
+                if (clonedOfficeHours.containsKey(cellKeyFromClonedList)){
+                    taData.getOfficeHours().put(cellKey, clonedOfficeHours.get(cellKeyFromClonedList));
+                } else {
+                    cellRemovedOverload = true;
+                    break;
+                }
+            }
+            if (cellRemovedOverload)
+                break;
+        }
+        
+        if (!cellRemovedOverload){
+            // still need to reset hours for the remaining cells rows
+            for (int i=differenceBetweenNewAndCurrentTime+1; i <= sizeOfOldGrid; i++){
+                for (int col=2; col<7; col++){
+                    String cellKey = taData.getCellKey(col, i);
+                    taData.getOfficeHours().put(cellKey, clonedOfficeHours.get(String.valueOf(col)+"_"+String.valueOf(i+differenceBetweenNewAndCurrentTime)));
+                }
+            }
+        }
+        
+        // REBUILD THE GRID
+        resetWorkspace();
+        reloadWorkspace(taData);
+        updatingTime = false;
     }
     
     public void newStartBeforeCurrentStart(TAData taData, int actualStartHour){
@@ -571,26 +619,28 @@ public class TAWorkspace extends AppWorkspaceComponent {
                 addCellToGrid(dataComponent, officeHoursGridTACellPanes, officeHoursGridTACellLabels, col, row);
                 addCellToGrid(dataComponent, officeHoursGridTACellPanes, officeHoursGridTACellLabels, col, row+1);
                 if (updatingTime){
-                    dataComponent.getCellTextProperty(col, row).set(clonedOfficeHours.get(String.valueOf(col)+"_"+String.valueOf(row)).getValue());
-                    dataComponent.getCellTextProperty(col, row+1).set(clonedOfficeHours.get(String.valueOf(col)+"_"+String.valueOf(row+1)).getValue());
+                    dataComponent.getCellTextProperty(col, row).setValue(clonedOfficeHours.get(String.valueOf(col)+"_"+String.valueOf(row)).getValue());
+                    dataComponent.getCellTextProperty(col, row+1).setValue(clonedOfficeHours.get(String.valueOf(col)+"_"+String.valueOf(row+1)).getValue());
                 }
                 col++;
             }
             row += 2;
         }
         
+        /*
         // retrieve back the officeHours
         if (updatingTime){
-            dataComponent.setOfficeHours(clonedOfficeHours);
-        }
+            dataComponent.setOfficeHours(cloneOfficeHours(clonedOfficeHours));
+        }*/
         
         // CONTROLS FOR TOGGLING TA OFFICE HOURS
         for (Pane p : officeHoursGridTACellPanes.values()) {
             p.setOnMouseClicked(e -> {
                 boolean toggled = false;
                 toggled = controller.handleCellToggle((Pane) e.getSource());
-                if (toggled)
+                if (toggled){
                     app.getGUI().getAppFileController().markAsEdited(app.getGUI());     // flag as file has been modified
+                }
             });
         }
         
@@ -605,7 +655,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
             if (selectedItem != null){
                 TeachingAssistant ta = (TeachingAssistant)selectedItem;
                 if (ev.getCode() == KeyCode.BACK_SPACE || ev.getCode() == KeyCode.DELETE){
-                    controller.handleDeleteTAfromTable(ta);
+                    controller.handleDeleteTAfromTable(dataComponent, ta);
                     app.getGUI().getAppFileController().markAsEdited(app.getGUI());         // flag as file has been modified
                     taTable.getSelectionModel().clearSelection();                           // clear selected item
                 } else if (ev.getCode() == KeyCode.UP || ev.getCode() == KeyCode.DOWN) {
@@ -614,20 +664,12 @@ public class TAWorkspace extends AppWorkspaceComponent {
                     TeachingAssistant newSelectedTA = null;
                     
                     if (ev.getCode() == KeyCode.UP){
-                        if (indexOfOldTA == 0){                 // if current TA is the first one, so can't go UP anymore
-                            nameTextField.clear();
-                            emailTextField.clear();
-                            addButton.setText("Add TA");
-                        } else {
+                        if (indexOfOldTA != 0) {
                             indexOfNewTA = indexOfOldTA - 1;
                             newSelectedTA = (TeachingAssistant)((TAData)app.getDataComponent()).getTeachingAssistants().get(indexOfNewTA);
                         }
                     } else if (ev.getCode() == KeyCode.DOWN) {
-                        if (indexOfOldTA == ((TAData)app.getDataComponent()).getTeachingAssistants().size()-1){
-                            nameTextField.clear();
-                            emailTextField.clear();
-                            addButton.setText("Add TA");
-                        } else {
+                        if (indexOfOldTA != ((TAData)app.getDataComponent()).getTeachingAssistants().size()-1) {
                             indexOfNewTA = indexOfOldTA + 1;
                             newSelectedTA = (TeachingAssistant)((TAData)app.getDataComponent()).getTeachingAssistants().get(indexOfNewTA);
                         }
@@ -654,6 +696,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
             } 
         });
         
+        taTable.getSelectionModel().clearSelection();
         nameTextField.clear();
         emailTextField.clear();
         addButton.setText("Add TA");
