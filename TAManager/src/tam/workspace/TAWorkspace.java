@@ -258,9 +258,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
             } else if (startBox.getSelectionModel().getSelectedItem() != null && endBox.getSelectionModel().getSelectedItem() == null){
                 handleOnlyStart(taData);
             } else if (startBox.getSelectionModel().getSelectedItem() == null && endBox.getSelectionModel().getSelectedItem() != null) {
-                String endTime = (String) endBox.getSelectionModel().getSelectedItem();
-                int indexOfSelected = endBox.getSelectionModel().getSelectedIndex();
-                System.out.println("End time: " + endTime + String.valueOf(", index: "+indexOfSelected));
+                handleOnlyEnd(taData);
             } else {
                 String startTime = (String) startBox.getSelectionModel().getSelectedItem();
                 int startIndex = startBox.getSelectionModel().getSelectedIndex();
@@ -274,7 +272,41 @@ public class TAWorkspace extends AppWorkspaceComponent {
         });
     }
     
+    public void handleOnlyEnd(TAData taData){
+        // CONVERT NEW END TIME TO 0-24 HOUR UNIT
+        String endTime = (String) endBox.getSelectionModel().getSelectedItem();
+        int indexOfSelected = endBox.getSelectionModel().getSelectedIndex();
+        String newEndHour = endTime.substring(0, endTime.indexOf(':'));
+        String newEndMin = (indexOfSelected % 2 == 0) ? "00" : "30";
+        String newEndAMPM = endTime.substring(endTime.indexOf(':') + 3);
+        int actualEndHour = Integer.parseInt(newEndHour);
+        if (newEndAMPM.equals("pm")){
+            if (actualEndHour != 12)
+                actualEndHour += 12;
+        }
+        
+        int currentStartHour = taData.getStartHour();
+        String currentStartMin = taData.getStartMin();
+        int resultOfCompareNewEndTimeVsCurrentStartHour = compareHour(actualEndHour, newEndMin, currentStartHour, currentStartMin);
+        
+        if (resultOfCompareNewEndTimeVsCurrentStartHour == -1){
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+            dialog.show("Invalid time frame!", "End Time must be after current Start Time.");
+        } else if (resultOfCompareNewEndTimeVsCurrentStartHour == 0) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+            dialog.show("Invalid time frame!", "Start Time must be different from current End Time.");
+        } else {
+            int differenceBetweenNewAndCurrentEndTime = compareHour(actualEndHour, newEndMin, taData.getEndHour(), taData.getEndMin());
+            if (differenceBetweenNewAndCurrentEndTime > 0) {
+                newEndTimeAfterCurrentEndTime(taData, actualEndHour);
+            } else if (differenceBetweenNewAndCurrentEndTime < 0) {
+                newEndTimeBeforeCurrentEndTime(taData, actualEndHour);
+            }
+        }
+    }
+    
     public void handleOnlyStart(TAData taData){
+        // CONVERT NEW START TIME TO 0-24 HOUR UNIT
         String startTime = (String) startBox.getSelectionModel().getSelectedItem();
         int indexOfSelected = startBox.getSelectionModel().getSelectedIndex();
         String newStartHour = startTime.substring(0, startTime.indexOf(':'));
@@ -286,6 +318,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
                 actualStartHour += 12;
         }
         
+        // COMPARE NEW TIME VS CURRENT TIME TO SEE WHICH HAPPENS BEFORE AND AFTER
         int currentEndHour = taData.getEndHour();
         String currentEndMin = taData.getEndMin();
         int resultOfCompareNewStartTimeVsCurrentEndHour = compareHour(actualStartHour, newStartMin, currentEndHour, currentEndMin);
@@ -304,6 +337,51 @@ public class TAWorkspace extends AppWorkspaceComponent {
                 newStartTimeAfterCurrentStart(taData, actualStartHour);
             }
         }
+    }
+    
+    public void newEndTimeBeforeCurrentEndTime(TAData taData, int actualEndHour) {
+        int differenceBetweenNewAndCurrentTime = (int)differenceBetweenNewAndCurrentTime(taData.getEndHour(), taData.getEndMin(), actualEndHour);
+        
+        int sizeOfOldGrid = (int)taData.differenceRowsBetweenStartAndEnd()+1;
+        updatingTime = true;
+        taData.setEndHour(actualEndHour);
+        taData.setEndMin("00");
+        
+        for (int i=sizeOfOldGrid; i>sizeOfOldGrid-differenceBetweenNewAndCurrentTime; i--){
+            for (int col = 2; col < 7; col++) {
+                String cellKey = taData.getCellKey(col, i);
+                if (taData.getOfficeHours().containsKey(cellKey)) {
+                    taData.getOfficeHours().remove(cellKey);
+                }
+            }
+        }
+        
+        // REBUILD THE GRID
+        resetWorkspace();
+        reloadWorkspace(taData);
+        updatingTime = false;
+    }
+    
+    public void newEndTimeAfterCurrentEndTime(TAData taData, int actualEndHour){
+        int differenceBetweenNewAndCurrentTime = (int)differenceBetweenNewAndCurrentTime(taData.getEndHour(), taData.getEndMin(), actualEndHour);
+        
+        int sizeOfOldGrid = (int)taData.differenceRowsBetweenStartAndEnd()+1;
+        updatingTime = true;
+        taData.setEndHour(actualEndHour);
+        taData.setEndMin("00");
+        
+        // FILL THE EMPTY ADDED CELLS ROWS
+        for (int i=sizeOfOldGrid+1; i <= sizeOfOldGrid+differenceBetweenNewAndCurrentTime; i++){
+            for (int col=2; col<7; col++){
+                String cellKey = taData.getCellKey(col, i);
+                taData.getOfficeHours().put(cellKey, new Label().textProperty());
+            }
+        }
+        
+        // REBUILD THE GRID
+        resetWorkspace();
+        reloadWorkspace(taData);
+        updatingTime = false;
     }
     
     public void newStartTimeAfterCurrentStart(TAData taData, int actualStartHour){
@@ -385,7 +463,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
     
     public double differenceBetweenNewAndCurrentTime(int currentHour, String currentMin, int newTime){
         double currentTime = (currentMin.equals("30"))? (currentHour+0.5):currentHour;
-        return 2*(currentTime-newTime);
+        return Math.abs(2*(currentTime-newTime));
     }
     
     public HashMap<String, StringProperty> cloneOfficeHours(HashMap<String, StringProperty> officeHours){
