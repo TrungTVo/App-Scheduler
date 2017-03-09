@@ -1,27 +1,32 @@
 
 {
-    "startHour":"9",
+    "startHour":"12",
     "endHour":"20",
     "undergrad_tas":[
         {
-            "name":"Aiko Chu",
-            "email":""
+            "name":"Hong Phuong",
+            "email":"aikochu@gmail.com"
         },
         {
-            "name":"vo thanh trung",
+            "name":"Trung Vo",
             "email":"vtt311096@gmail.com"
         }
     ],
     "officeHours":[
         {
-            "day":"TUESDAY",
-            "time":"12_00pm",
-            "name":"vo thanh trung"
+            "day":"WEDNESDAY",
+            "time":"1_30pm",
+            "name":"Hong Phuong"
         },
         {
             "day":"TUESDAY",
-            "time":"12_00pm",
-            "name":"Aiko Chu"
+            "time":"2_00pm",
+            "name":"Trung Vo"
+        },
+        {
+            "day":"WEDNESDAY",
+            "time":"2_00pm",
+            "name":"Trung Vo"
         }
     ]
 }

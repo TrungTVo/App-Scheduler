@@ -2,6 +2,7 @@ package tam.workspace;
 
 import djf.components.AppDataComponent;
 import djf.components.AppWorkspaceComponent;
+import djf.ui.AppMessageDialogSingleton;
 import java.util.ArrayList;
 import java.util.HashMap;
 import tam.TAManagerApp;
@@ -34,6 +35,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.FlowPane;
+import tam.file.TAFiles;
 /**
  * This class serves as the workspace component for the TA Manager
  * application. It provides all the user interface controls in 
@@ -75,7 +77,8 @@ public class TAWorkspace extends AppWorkspaceComponent {
     ComboBox endBox;
     HBox startWrap;
     HBox endWrap;
-    Button update;
+    Button updateButton;
+    boolean updatingTime;
     
     // THE OFFICE HOURS GRID
     GridPane officeHoursGridPane;
@@ -175,7 +178,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
         
         // ADD COMBO BOXES
         TAData taData = (TAData)app.getDataComponent();
-        ObservableList<String> hoursList = taData.generateStartEndTimeList(0, true);
+        ObservableList<String> hoursList = taData.generateStartEndTimeList(0);
         startBox = new ComboBox(hoursList);
         endBox = new ComboBox(hoursList);
         startTimeLabel = new Label("Start time:");
@@ -188,8 +191,8 @@ public class TAWorkspace extends AppWorkspaceComponent {
         endWrap.setAlignment(Pos.CENTER);
         officeHoursHeaderBox.getChildren().add(startWrap);
         officeHoursHeaderBox.getChildren().add(endWrap);
-        update = new Button("Update");
-        officeHoursHeaderBox.getChildren().add(update);
+        updateButton = new Button("Update");
+        officeHoursHeaderBox.getChildren().add(updateButton);
         officeHoursHeaderBox.setAlignment(Pos.CENTER_LEFT);
         
         // BOTH PANES WILL NOW GO IN A SPLIT PANE
@@ -246,6 +249,118 @@ public class TAWorkspace extends AppWorkspaceComponent {
                 nameTextField.requestFocus();
             }
         });
+        
+        // CONTROL FOR UPDATE COMBOBOX
+        updateButton.setOnAction(e -> {
+            if (startBox.getSelectionModel().getSelectedItem() == null && endBox.getSelectionModel().getSelectedItem() == null){
+                AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+                dialog.show("Alert!", "Please choose at least one time to update.");
+            } else if (startBox.getSelectionModel().getSelectedItem() != null && endBox.getSelectionModel().getSelectedItem() == null){
+                handleOnlyStart(taData);
+            } else if (startBox.getSelectionModel().getSelectedItem() == null && endBox.getSelectionModel().getSelectedItem() != null) {
+                String endTime = (String) endBox.getSelectionModel().getSelectedItem();
+                int indexOfSelected = endBox.getSelectionModel().getSelectedIndex();
+                System.out.println("End time: " + endTime + String.valueOf(", index: "+indexOfSelected));
+            } else {
+                String startTime = (String) startBox.getSelectionModel().getSelectedItem();
+                int startIndex = startBox.getSelectionModel().getSelectedIndex();
+                System.out.println("Start time: " + startTime + String.valueOf(", index: "+startIndex));
+                String endTime = (String) endBox.getSelectionModel().getSelectedItem();
+                int endIndex = endBox.getSelectionModel().getSelectedIndex();
+                System.out.println("End time: " + endTime + String.valueOf(", index: "+endIndex));
+            }
+        });
+    }
+    
+    public void handleOnlyStart(TAData taData){
+        String startTime = (String) startBox.getSelectionModel().getSelectedItem();
+        int indexOfSelected = startBox.getSelectionModel().getSelectedIndex();
+        String newStartHour = startTime.substring(0, startTime.indexOf(':'));
+        String newStartMin = (indexOfSelected % 2 == 0) ? "00" : "30";
+        String newStartAMPM = startTime.substring(startTime.indexOf(':') + 3);
+        int actualStartHour = Integer.parseInt(newStartHour);
+        if (newStartAMPM.equals("pm")){
+            if (actualStartHour != 12)
+                actualStartHour += 12;
+        }
+        
+        int currentEndHour = taData.getEndHour();
+        String currentEndMin = taData.getEndMin();
+        int resultOfCompareNewStartTimeVsCurrentEndHour = compareHour(actualStartHour, newStartMin, currentEndHour, currentEndMin);
+        
+        if (resultOfCompareNewStartTimeVsCurrentEndHour == 1) {             // if selected Start Hour is after current End Hour --> invalid
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+            dialog.show("Invalid time frame!", "Start Time must be before current End Time.");
+        } else if (resultOfCompareNewStartTimeVsCurrentEndHour == 0) {             // if they are at the same time                     
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+            dialog.show("Invalid time frame!", "Start Time must be different from current End Time.");
+        } else {
+            int differenceBetweenNewAndCurrentStartTime = compareHour(actualStartHour, newStartMin, taData.getStartHour(), taData.getStartMin());
+            if (differenceBetweenNewAndCurrentStartTime < 0){
+                newStartBeforeCurrentStart(taData, actualStartHour);
+            }
+            
+        }
+    }
+    
+    public void newStartBeforeCurrentStart(TAData taData, int actualStartHour){
+        int differenceBetweenNewAndCurrentTime = (int)differenceBetweenNewAndCurrentTime(taData.getStartHour(), taData.getStartMin(), actualStartHour);
+        
+        updatingTime = true;
+        taData.setStartHour(actualStartHour);
+        taData.setStartMin("00");
+        
+        HashMap<String, StringProperty> clonedOfficeHours = cloneOfficeHours(taData.getOfficeHours());
+        taData.getOfficeHours().clear();
+        
+        // FOR EMPTY ROWS ADDED
+        for (int i=1; i <= differenceBetweenNewAndCurrentTime; i++){
+            for (int col=2; col<7; col++){
+                String cellKey = taData.getCellKey(col, i);
+                taData.getOfficeHours().put(cellKey, new Label().textProperty());
+            }
+        }
+        
+        // RESET OFFICEHOURS HASHMAP
+        for (int i=differenceBetweenNewAndCurrentTime+1; i<=(int)taData.differenceRowsBetweenStartAndEnd()+1; i++){
+            for (int col=2; col<7; col++){
+                String cellKey = taData.getCellKey(col, i);
+                taData.getOfficeHours().put(cellKey, clonedOfficeHours.get(String.valueOf(col)+"_"+String.valueOf(i-differenceBetweenNewAndCurrentTime)));
+            }
+        }
+        
+        // REBUILD THE GRID
+        resetWorkspace();
+        reloadWorkspace(taData);
+        updatingTime = false;
+    }
+    
+    public double differenceBetweenNewAndCurrentTime(int currentHour, String currentMin, int newTime){
+        double currentTime = (currentMin.equals("30"))? (currentHour+0.5):currentHour;
+        return 2*(currentTime-newTime);
+    }
+    
+    public HashMap<String, StringProperty> cloneOfficeHours(HashMap<String, StringProperty> officeHours){
+        HashMap<String, StringProperty> res = new HashMap<>();
+        for (String cellKey:officeHours.keySet()){
+            res.put(new String(cellKey), officeHours.get(cellKey));
+        }
+        return res;
+    }
+    
+    public int compareHour(int hourA, String minA, int hourB, String minB){
+        if (hourA > hourB)
+            return 1;
+        else if (hourA < hourB)
+            return -1;
+        else{
+            if (Integer.parseInt(minA) > Integer.parseInt(minB))
+                return 1;
+            else if (Integer.parseInt(minA) < Integer.parseInt(minB))
+                return -1;
+            else
+                return 0;
+        }
     }
     
     
@@ -427,6 +542,12 @@ public class TAWorkspace extends AppWorkspaceComponent {
         }
         
         // THEN THE TIME AND TA CELLS
+        // clone OfficeHours first
+        HashMap<String, StringProperty> clonedOfficeHours = new HashMap<>();
+        if (updatingTime){
+            clonedOfficeHours = cloneOfficeHours(dataComponent.getOfficeHours());
+        }
+        
         int row = 1;
         for (int i = dataComponent.getStartHour(); i < dataComponent.getEndHour(); i++) {
             // START TIME COLUMN
@@ -449,9 +570,18 @@ public class TAWorkspace extends AppWorkspaceComponent {
             while (col < 7) {
                 addCellToGrid(dataComponent, officeHoursGridTACellPanes, officeHoursGridTACellLabels, col, row);
                 addCellToGrid(dataComponent, officeHoursGridTACellPanes, officeHoursGridTACellLabels, col, row+1);
+                if (updatingTime){
+                    dataComponent.getCellTextProperty(col, row).set(clonedOfficeHours.get(String.valueOf(col)+"_"+String.valueOf(row)).getValue());
+                    dataComponent.getCellTextProperty(col, row+1).set(clonedOfficeHours.get(String.valueOf(col)+"_"+String.valueOf(row+1)).getValue());
+                }
                 col++;
             }
             row += 2;
+        }
+        
+        // retrieve back the officeHours
+        if (updatingTime){
+            dataComponent.setOfficeHours(clonedOfficeHours);
         }
         
         // CONTROLS FOR TOGGLING TA OFFICE HOURS
@@ -554,6 +684,6 @@ public class TAWorkspace extends AppWorkspaceComponent {
         
         // AND FINALLY, GIVE THE TEXT PROPERTY TO THE DATA MANAGER
         // SO IT CAN MANAGE ALL CHANGES
-        dataComponent.setCellProperty(col, row, cellLabel.textProperty());        
+        dataComponent.setCellProperty(col, row, cellLabel.textProperty());
     }
 }

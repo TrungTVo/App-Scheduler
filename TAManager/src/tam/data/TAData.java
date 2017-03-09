@@ -46,10 +46,12 @@ public class TAData implements AppDataComponent {
     // NO MEANS FOR CHANGING THESE VALUES
     int startHour;
     int endHour;
+    String startMin;
+    String endMin;
     
     // DEFAULT VALUES FOR START AND END HOURS IN MILITARY HOURS
-    public static final int MIN_START_HOUR = 9;
-    public static final int MAX_END_HOUR = 20;
+    public static final int MIN_START_HOUR = 0;
+    public static final int MAX_END_HOUR = 23;
 
     /**
      * This constructor will setup the required data structures for
@@ -68,6 +70,8 @@ public class TAData implements AppDataComponent {
         // THESE ARE THE DEFAULT OFFICE HOURS
         startHour = MIN_START_HOUR;
         endHour = MAX_END_HOUR;
+        startMin = new String("00");
+        endMin = new String("30");
         
         //THIS WILL STORE OUR OFFICE HOURS
         officeHours = new HashMap();
@@ -89,6 +93,8 @@ public class TAData implements AppDataComponent {
     public void resetData() {
         startHour = MIN_START_HOUR;
         endHour = MAX_END_HOUR;
+        startMin = "00";
+        endMin = "30";
         teachingAssistants.clear();
         officeHours.clear();
     }
@@ -101,6 +107,36 @@ public class TAData implements AppDataComponent {
 
     public int getEndHour() {
         return endHour;
+    }
+    
+    public String getStartMin() {
+        return startMin;
+    }
+    
+    public String getEndMin() {
+        return endMin;
+    }
+    
+    public void setStartHour(int startHour){
+        this.startHour = startHour;
+    }
+    
+    public void setEndHour(int endHour){
+        this.endHour = endHour;
+    }
+    
+    public void setStartMin(String startMin){
+        this.startMin = startMin;
+    }
+    
+    public void setEndMin(String endMin){
+        this.endMin = endMin;
+    }
+    
+    public double differenceRowsBetweenStartAndEnd(){
+        double tempStartHr = (startMin.equals("30"))? (startHour+0.5):startHour;
+        double tempEndHr = (endMin.equals("30"))? (endHour+0.5):endHour;
+        return (int)(2*(tempEndHr-tempStartHr)-1);
     }
     
     public ArrayList<String> getGridHeaders() {
@@ -124,18 +160,20 @@ public class TAData implements AppDataComponent {
         return officeHours;
     }
     
+    public void setOfficeHours(HashMap<String, StringProperty> officeHours){
+        this.officeHours = officeHours;
+    }
+    
     public int getNumRows() {
         return ((endHour - startHour) * 2) + 1;
     }
     
     // generate a lsit of start & end time for combo boxes
-    public ObservableList<String> generateStartEndTimeList(int startTime, boolean onHour){
+    public ObservableList<String> generateStartEndTimeList(int startTime){
         ObservableList<String> res = FXCollections.observableArrayList();
-        for (int i=1; i<=48; i++){
-            res.add(getTimeString(startTime, onHour));
-            onHour = !onHour;
-            if (onHour)
-                startTime++;
+        for (int i=1; i<=24; i++){
+            res.add(getTimeString(startTime, true));
+            startTime++;
         }
         return res;
     }
