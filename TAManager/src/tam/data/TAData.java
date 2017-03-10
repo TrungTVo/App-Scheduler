@@ -71,7 +71,7 @@ public class TAData implements AppDataComponent {
         startHour = MIN_START_HOUR;
         endHour = MAX_END_HOUR;
         startMin = new String("00");
-        endMin = new String("30");
+        endMin = new String("00");
         
         //THIS WILL STORE OUR OFFICE HOURS
         officeHours = new HashMap();
@@ -94,7 +94,7 @@ public class TAData implements AppDataComponent {
         startHour = MIN_START_HOUR;
         endHour = MAX_END_HOUR;
         startMin = "00";
-        endMin = "30";
+        endMin = "00";
         teachingAssistants.clear();
         officeHours.clear();
     }

@@ -260,16 +260,76 @@ public class TAWorkspace extends AppWorkspaceComponent {
             } else if (startBox.getSelectionModel().getSelectedItem() == null && endBox.getSelectionModel().getSelectedItem() != null) {
                 handleOnlyEnd(taData);
             } else {
-                String startTime = (String) startBox.getSelectionModel().getSelectedItem();
-                int startIndex = startBox.getSelectionModel().getSelectedIndex();
-                System.out.println("Start time: " + startTime + String.valueOf(", index: "+startIndex));
-                String endTime = (String) endBox.getSelectionModel().getSelectedItem();
-                int endIndex = endBox.getSelectionModel().getSelectedIndex();
-                System.out.println("End time: " + endTime + String.valueOf(", index: "+endIndex));
+                handleBothStartEnd(taData);
             }
             startBox.getSelectionModel().clearSelection();
             endBox.getSelectionModel().clearSelection();
         });
+    }
+    
+    public void handleBothStartEnd(TAData taData){
+        // CONVERT NEW START TIME TO 0-24 HOUR UNIT
+        String startTime = (String) startBox.getSelectionModel().getSelectedItem();
+        int indexOfStartSelected = startBox.getSelectionModel().getSelectedIndex();
+        String newStartHour = startTime.substring(0, startTime.indexOf(':'));
+        String newStartMin = (indexOfStartSelected % 2 == 0) ? "00" : "30";
+        String newStartAMPM = startTime.substring(startTime.indexOf(':') + 3);
+        int actualStartHour = Integer.parseInt(newStartHour);
+        if (newStartAMPM.equals("pm")){
+            if (actualStartHour != 12)
+                actualStartHour += 12;
+        }
+        
+        // CONVERT NEW END TIME TO 0-24 HOUR UNIT
+        String endTime = (String) endBox.getSelectionModel().getSelectedItem();
+        int indexOfEndSelected = endBox.getSelectionModel().getSelectedIndex();
+        String newEndHour = endTime.substring(0, endTime.indexOf(':'));
+        String newEndMin = (indexOfEndSelected % 2 == 0) ? "00" : "30";
+        String newEndAMPM = endTime.substring(endTime.indexOf(':') + 3);
+        int actualEndHour = Integer.parseInt(newEndHour);
+        if (newEndAMPM.equals("pm")){
+            if (actualEndHour != 12)
+                actualEndHour += 12;
+        }
+        
+        int compareNewStartNewEndTime = compareHour(actualStartHour, newStartMin, actualEndHour, newEndMin);
+        if (compareNewStartNewEndTime == 0){
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+            dialog.show("Invalid time frame!", "Start Time must be different from End Time.");
+        } else if (compareNewStartNewEndTime == 1) {
+            AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+            dialog.show("Invalid time frame!", "Start Time must be before End Time.");
+        } else {
+            if (compareHour(actualStartHour, newStartMin, taData.getEndHour(), taData.getEndMin()) < 0) {
+                int differenceBetweenNewAndCurrentStartTime = compareHour(actualStartHour, newStartMin, taData.getStartHour(), taData.getStartMin());
+                if (differenceBetweenNewAndCurrentStartTime < 0) {           // if new start Time is before current start Time
+                    newStartBeforeCurrentStart(taData, actualStartHour);
+                } else if (differenceBetweenNewAndCurrentStartTime > 0) {           // or if new start Time is after current start Time
+                    newStartTimeAfterCurrentStart(taData, actualStartHour);
+                }
+                
+                int differenceBetweenNewAndCurrentEndTime = compareHour(actualEndHour, newEndMin, taData.getEndHour(), taData.getEndMin());
+                if (differenceBetweenNewAndCurrentEndTime > 0) {
+                    newEndTimeAfterCurrentEndTime(taData, actualEndHour);
+                } else if (differenceBetweenNewAndCurrentEndTime < 0) {
+                    newEndTimeBeforeCurrentEndTime(taData, actualEndHour);
+                }
+            } else {
+                int differenceBetweenNewAndCurrentEndTime = compareHour(actualEndHour, newEndMin, taData.getEndHour(), taData.getEndMin());
+                if (differenceBetweenNewAndCurrentEndTime > 0) {
+                    newEndTimeAfterCurrentEndTime(taData, actualEndHour);
+                } else if (differenceBetweenNewAndCurrentEndTime < 0) {
+                    newEndTimeBeforeCurrentEndTime(taData, actualEndHour);
+                }
+                
+                int differenceBetweenNewAndCurrentStartTime = compareHour(actualStartHour, newStartMin, taData.getStartHour(), taData.getStartMin());
+                if (differenceBetweenNewAndCurrentStartTime < 0) {           // if new start Time is before current start Time
+                    newStartBeforeCurrentStart(taData, actualStartHour);
+                } else if (differenceBetweenNewAndCurrentStartTime > 0) {           // or if new start Time is after current start Time
+                    newStartTimeAfterCurrentStart(taData, actualStartHour);
+                }
+            }
+        }
     }
     
     public void handleOnlyEnd(TAData taData){
