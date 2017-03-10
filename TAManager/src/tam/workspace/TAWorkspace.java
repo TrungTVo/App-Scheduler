@@ -3,6 +3,7 @@ package tam.workspace;
 import djf.components.AppDataComponent;
 import djf.components.AppWorkspaceComponent;
 import djf.ui.AppMessageDialogSingleton;
+import djf.ui.AppYesNoCancelDialogSingleton;
 import java.util.ArrayList;
 import java.util.HashMap;
 import tam.TAManagerApp;
@@ -252,16 +253,25 @@ public class TAWorkspace extends AppWorkspaceComponent {
         
         // CONTROL FOR UPDATE COMBOBOX
         updateButton.setOnAction(e -> {
-            if (startBox.getSelectionModel().getSelectedItem() == null && endBox.getSelectionModel().getSelectedItem() == null){
-                AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
-                dialog.show("Alert!", "Please choose at least one time to update.");
-            } else if (startBox.getSelectionModel().getSelectedItem() != null && endBox.getSelectionModel().getSelectedItem() == null){
-                handleOnlyStart(taData);
-            } else if (startBox.getSelectionModel().getSelectedItem() == null && endBox.getSelectionModel().getSelectedItem() != null) {
-                handleOnlyEnd(taData);
-            } else {
-                handleBothStartEnd(taData);
+            AppYesNoCancelDialogSingleton yesNoDialog = AppYesNoCancelDialogSingleton.getSingleton();
+            yesNoDialog.show("Alert!", "Changing time frame might remove some TAs in the Office Hours Grid. Are you sure to do this?");
+            
+            // AND NOW GET THE USER'S SELECTION
+            String selection = yesNoDialog.getSelection();
+            
+            if (selection.equals(AppYesNoCancelDialogSingleton.YES)) {
+                if (startBox.getSelectionModel().getSelectedItem() == null && endBox.getSelectionModel().getSelectedItem() == null) {
+                    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+                    dialog.show("Alert!", "Please choose at least one time to update.");
+                } else if (startBox.getSelectionModel().getSelectedItem() != null && endBox.getSelectionModel().getSelectedItem() == null) {
+                    handleOnlyStart(taData);
+                } else if (startBox.getSelectionModel().getSelectedItem() == null && endBox.getSelectionModel().getSelectedItem() != null) {
+                    handleOnlyEnd(taData);
+                } else {
+                    handleBothStartEnd(taData);
+                }
             }
+            
             startBox.getSelectionModel().clearSelection();
             endBox.getSelectionModel().clearSelection();
         });
