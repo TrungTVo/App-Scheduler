@@ -80,6 +80,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
     HBox endWrap;
     Button updateButton;
     boolean updatingTime;
+    boolean updated;
     
     // THE OFFICE HOURS GRID
     GridPane officeHoursGridPane;
@@ -251,6 +252,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
             }
         });
         
+        updated = false;
         // CONTROL FOR UPDATE COMBOBOX
         updateButton.setOnAction(e -> {
             AppYesNoCancelDialogSingleton yesNoDialog = AppYesNoCancelDialogSingleton.getSingleton();
@@ -272,6 +274,9 @@ public class TAWorkspace extends AppWorkspaceComponent {
                 }
             }
             
+            if (updated){
+                app.getGUI().getAppFileController().markAsEdited(app.getGUI());     // flag as office hours grid has been modified
+            }
             startBox.getSelectionModel().clearSelection();
             endBox.getSelectionModel().clearSelection();
         });
@@ -430,6 +435,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
         resetWorkspace();
         reloadWorkspace(taData);
         updatingTime = false;
+        updated = true;
     }
     
     public void newEndTimeAfterCurrentEndTime(TAData taData, int actualEndHour){
@@ -452,6 +458,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
         resetWorkspace();
         reloadWorkspace(taData);
         updatingTime = false;
+        updated = true;
     }
     
     public void newStartTimeAfterCurrentStart(TAData taData, int actualStartHour){
@@ -497,6 +504,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
         resetWorkspace();
         reloadWorkspace(taData);
         updatingTime = false;
+        updated = true;
     }
     
     public void newStartBeforeCurrentStart(TAData taData, int actualStartHour){
@@ -529,6 +537,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
         resetWorkspace();
         reloadWorkspace(taData);
         updatingTime = false;
+        updated = true;
     }
     
     public double differenceBetweenNewAndCurrentTime(int currentHour, String currentMin, int newTime){
