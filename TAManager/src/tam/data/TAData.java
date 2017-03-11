@@ -290,6 +290,7 @@ public class TAData implements AppDataComponent {
 
         // ADD THE TA
         if (!containsTA(initName, teachingAssistants)) {
+            // push current state into stack before transaction
             jTPS_Transaction transaction = new AddingTA_Transaction(ta, teachingAssistants);
             ((TAWorkspace)app.getWorkspaceComponent()).getJTPS().addTransaction(transaction);
             //teachingAssistants.add(ta);

@@ -15,6 +15,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import tam.jtps.ToggleCell_Transaction;
+import tam.jtps.jTPS_Transaction;
 
 /**
  * This class provides responses to all workspace interactions, meaning
@@ -174,9 +176,13 @@ public class TAController {
             String taName = ta.getName();
             TAData data = (TAData)app.getDataComponent();
             String cellKey = pane.getId();
-
+            
+            // push current state into stack before transaction
+            jTPS_Transaction transaction = new ToggleCell_Transaction(ta, data.getOfficeHours(), pane, data);
+            ((TAWorkspace)app.getWorkspaceComponent()).getJTPS().addTransaction(transaction);
+            
             // AND TOGGLE THE OFFICE HOURS IN THE CLICKED CELL
-            data.toggleTAOfficeHours(cellKey, taName);
+            //data.toggleTAOfficeHours(cellKey, taName);
             return true;
         } else {
             return false;
