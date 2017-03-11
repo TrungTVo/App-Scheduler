@@ -1,7 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * This class serves as a transaction object for delete TA. Used
+ * in UNDO/REDO mode. This transaction object will be used to be pushed
+ * into the stack using jTPS framework.
+ * 
+ * @author Trung Vo - CSE219
  */
 package tam.jtps;
 
@@ -13,10 +15,6 @@ import javafx.scene.layout.Pane;
 import tam.data.TAData;
 import tam.data.TeachingAssistant;
 
-/**
- *
- * @author trungvo
- */
 public class DeleteTA_Transaction implements jTPS_Transaction {
     private TeachingAssistant ta;
     private HashMap<String, StringProperty> officeHours;
