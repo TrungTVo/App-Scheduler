@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import tam.jtps.DeleteTA_Transaction;
 import tam.jtps.ToggleCell_Transaction;
 import tam.jtps.jTPS_Transaction;
 
@@ -190,6 +191,12 @@ public class TAController {
     }
     
     public void handleDeleteTAfromTable(TAData data, TeachingAssistant ta) {
+        
+        // push current state into stack before transaction
+        jTPS_Transaction transaction = new DeleteTA_Transaction(ta, data.getOfficeHours(), data);
+        ((TAWorkspace)app.getWorkspaceComponent()).getJTPS().addTransaction(transaction);
+        
+        /*
         String taName = ta.getName();
         for (String cellKey:data.getOfficeHours().keySet()){
             StringProperty cellText = data.getOfficeHours().get(cellKey);
@@ -200,6 +207,8 @@ public class TAController {
             }
         }
         data.getTeachingAssistants().remove(ta);
+        */
+        
         TAWorkspace workspace = (TAWorkspace) app.getWorkspaceComponent();
         workspace.getNameTextField().clear();
         workspace.getEmailTextField().clear();

@@ -5,6 +5,7 @@
  */
 package tam.jtps;
 
+import java.util.Collections;
 import javafx.collections.ObservableList;
 import tam.data.TeachingAssistant;
 /**
@@ -23,6 +24,7 @@ public class AddingTA_Transaction implements jTPS_Transaction {
     @Override
     public void doTransaction() {
         taList.add(ta);
+        Collections.sort(taList);
     }
 
     @Override
