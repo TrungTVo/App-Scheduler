@@ -10,6 +10,9 @@ import javafx.beans.property.StringProperty;
 import properties_manager.PropertiesManager;
 import tam.TAManagerApp;
 import tam.TAManagerProp;
+import tam.jtps.AddingTA_Transaction;
+import tam.jtps.jTPS;
+import tam.jtps.jTPS_Transaction;
 import tam.workspace.TAWorkspace;
 
 /**
@@ -287,7 +290,9 @@ public class TAData implements AppDataComponent {
 
         // ADD THE TA
         if (!containsTA(initName, teachingAssistants)) {
-            teachingAssistants.add(ta);
+            jTPS_Transaction transaction = new AddingTA_Transaction(ta, teachingAssistants);
+            ((TAWorkspace)app.getWorkspaceComponent()).getJTPS().addTransaction(transaction);
+            //teachingAssistants.add(ta);
         }
 
         // SORT THE TAS

@@ -1,6 +1,12 @@
 .DS_Store
+.gitignore
 DesktopJavaFramework/DesktopJavaFramework/build/*
 PropertiesManager/PropertiesManager/build/*
 TAManager/work/*
 TAManager/nbproject/*
-TAManager/TAManager/build/*
+TAManager/build/classes/tam/*.class
+TAManager/build/classes/tam/data/*.class
+TAManager/build/classes/tam/file/*.class
+TAManager/build/classes/tam/jtps/*.class
+TAManager/build/classes/tam/style/*.class
+TAManager/build/classes/tam/workspace/*.class

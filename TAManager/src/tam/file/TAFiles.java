@@ -25,6 +25,7 @@ import javax.json.stream.JsonGenerator;
 import tam.TAManagerApp;
 import tam.data.TAData;
 import tam.data.TeachingAssistant;
+import tam.workspace.TAWorkspace;
 
 /**
  * This class serves as the file component for the TA
@@ -85,6 +86,8 @@ public class TAFiles implements AppFileComponent {
             String name = jsonOfficeHours.getString(JSON_NAME);
             dataManager.addOfficeHoursReservation(day, time, name);
         }
+        
+        ((TAWorkspace)app.getWorkspaceComponent()).getJTPS().reset();
     }
       
     // HELPER METHOD FOR LOADING DATA FROM A JSON FORMAT

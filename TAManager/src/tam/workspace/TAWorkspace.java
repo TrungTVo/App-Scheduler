@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import tam.TAManagerApp;
 import javafx.collections.ObservableList;
-import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -35,8 +34,11 @@ import java.util.*;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.FlowPane;
 import tam.file.TAFiles;
+import tam.jtps.jTPS;
 /**
  * This class serves as the workspace component for the TA Manager
  * application. It provides all the user interface controls in 
@@ -47,7 +49,10 @@ import tam.file.TAFiles;
 public class TAWorkspace extends AppWorkspaceComponent {
     // THIS PROVIDES US WITH ACCESS TO THE APP COMPONENTS
     TAManagerApp app;
-
+    
+    // jTPS Object
+    jTPS jtps;
+    
     // THIS PROVIDES RESPONSES TO INTERACTIONS WITH THIS WORKSPACE
     TAController controller;
 
@@ -101,7 +106,9 @@ public class TAWorkspace extends AppWorkspaceComponent {
     public TAWorkspace(TAManagerApp initApp) {
         // KEEP THIS FOR LATER
         app = initApp;
-
+        
+        jtps = new jTPS();
+        
         // WE'LL NEED THIS TO GET LANGUAGE PROPERTIES FOR OUR UI
         PropertiesManager props = PropertiesManager.getPropertiesManager();
 
@@ -134,12 +141,13 @@ public class TAWorkspace extends AppWorkspaceComponent {
         String namePromptText = props.getProperty(TAManagerProp.NAME_PROMPT_TEXT.toString());
         String emailPrompText = props.getProperty(TAManagerProp.EMAIL_PROMPT_TEXT.toString());
         String addButtonText = props.getProperty(TAManagerProp.ADD_BUTTON_TEXT.toString());
+        String clearButtonText = props.getProperty(TAManagerProp.CLEAR_BUTTON_TEXT.toString());
         nameTextField = new TextField();
         nameTextField.setPromptText(namePromptText);
         emailTextField = new TextField();
         emailTextField.setPromptText(emailPrompText);
         addButton = new Button(addButtonText);
-        clearButton = new Button("Clear");
+        clearButton = new Button(clearButtonText);
         addBox = new HBox();
         nameTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.4));
         emailTextField.prefWidthProperty().bind(addBox.widthProperty().multiply(.4));
@@ -183,8 +191,10 @@ public class TAWorkspace extends AppWorkspaceComponent {
         ObservableList<String> hoursList = taData.generateStartEndTimeList(0);
         startBox = new ComboBox(hoursList);
         endBox = new ComboBox(hoursList);
-        startTimeLabel = new Label("Start time:");
-        endTimeLabel = new Label("End time:");
+        String startTimelabel = props.getProperty(TAManagerProp.START_TIME_LABEL.toString());
+        startTimeLabel = new Label(startTimelabel);
+        String endTimelabel = props.getProperty(TAManagerProp.END_TIME_LABEL.toString());
+        endTimeLabel = new Label(endTimelabel);
         startWrap = new HBox(startTimeLabel);
         startWrap.getChildren().add(startBox);
         startWrap.setAlignment(Pos.CENTER);
@@ -193,7 +203,8 @@ public class TAWorkspace extends AppWorkspaceComponent {
         endWrap.setAlignment(Pos.CENTER);
         officeHoursHeaderBox.getChildren().add(startWrap);
         officeHoursHeaderBox.getChildren().add(endWrap);
-        updateButton = new Button("Update");
+        String updateBttn = props.getProperty(TAManagerProp.UPDATE_BUTTON.toString());
+        updateButton = new Button(updateBttn);
         officeHoursHeaderBox.getChildren().add(updateButton);
         officeHoursHeaderBox.setAlignment(Pos.CENTER_LEFT);
         
@@ -572,6 +583,9 @@ public class TAWorkspace extends AppWorkspaceComponent {
     // WE'LL PROVIDE AN ACCESSOR METHOD FOR EACH VISIBLE COMPONENT
     // IN CASE A CONTROLLER OR STYLE CLASS NEEDS TO CHANGE IT
     
+    public jTPS getJTPS(){
+        return jtps;
+    }
     
     public HBox getTAsHeaderBox() {
         return tasHeaderBox;
@@ -857,6 +871,18 @@ public class TAWorkspace extends AppWorkspaceComponent {
         nameTextField.clear();
         emailTextField.clear();
         addButton.setText("Add TA");
+        
+        KeyCombination undo = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
+        KeyCombination redo = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
+        
+        // listen to CTRL+Z and CTRL+Y
+        app.getGUI().getAppPane().setOnKeyReleased(e->{
+            if (undo.match(e)){
+                jtps.undoTransaction();
+            } else if (redo.match(e)){
+                jtps.doTransaction();
+            }
+        });
         
         // AND MAKE SURE ALL THE COMPONENTS HAVE THE PROPER STYLE
         TAStyle taStyle = (TAStyle)app.getStyleComponent();

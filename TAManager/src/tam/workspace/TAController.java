@@ -137,9 +137,11 @@ public class TAController {
             StringBuilder cellTextStr;
             for (String cellKey:data.getOfficeHours().keySet()){
                 StringProperty cellText = data.getOfficeHours().get(cellKey);
-                cellTextStr = new StringBuilder(cellText.getValue());
-                if (data.isCellPaneHasTAName(cellTextStr.toString(), oldName)){
-                    data.removeTAFromCell(cellText, oldName, nameToUpdate, edited, cellKey);
+                if (cellText != null) {
+                    cellTextStr = new StringBuilder(cellText.getValue());
+                    if (data.isCellPaneHasTAName(cellTextStr.toString(), oldName)) {
+                        data.removeTAFromCell(cellText, oldName, nameToUpdate, edited, cellKey);
+                    }
                 }
             }
         } else {                // if there is an error occured while editing, set TA Object back to old ones with old name & email

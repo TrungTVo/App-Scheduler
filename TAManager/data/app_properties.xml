@@ -66,7 +66,11 @@
         <property name="NAME_PROMPT_TEXT"               value="Name"></property>
         <property name="EMAIL_PROMPT_TEXT"              value="Email"></property>
         <property name="ADD_BUTTON_TEXT"                value="Add TA"></property>
+        <property name="CLEAR_BUTTON_TEXT"                value="Clear"></property>
+        <property name="UPDATE_BUTTON"                value="Update"></property>
         <property name="OFFICE_HOURS_SUBHEADER"         value="Office Hours Grid"></property>
+        <property name="START_TIME_LABEL"         value="Start Time:"></property>
+        <property name="END_TIME_LABEL"         value="End Time:"></property>
         
         <!-- WORKSPACE ERROR MESSAGES -->
         <property name="MISSING_TA_NAME_TITLE"          value="Missing TA Name"></property>
