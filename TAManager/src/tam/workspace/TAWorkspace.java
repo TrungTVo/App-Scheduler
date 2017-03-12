@@ -326,6 +326,15 @@ public class TAWorkspace extends AppWorkspaceComponent {
             AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
             dialog.show("Invalid time frame!", "Start Time must be before End Time.");
         } else {
+            // old time
+            int oldStartHour = taData.getStartHour();
+            int oldEndHour = taData.getEndHour();
+            String oldStartMin = taData.getStartMin();
+            String oldEndMin = taData.getEndMin();
+            
+            // clone current office hours as an Old Hours
+            HashMap<String, StringProperty> oldOfficeHours = cloneOfficeHours(taData.getOfficeHours());
+            
             if (compareHour(actualStartHour, newStartMin, taData.getEndHour(), taData.getEndMin()) < 0) {
                 int differenceBetweenNewAndCurrentStartTime = compareHour(actualStartHour, newStartMin, taData.getStartHour(), taData.getStartMin());
                 if (differenceBetweenNewAndCurrentStartTime < 0) {           // if new start Time is before current start Time
@@ -355,6 +364,24 @@ public class TAWorkspace extends AppWorkspaceComponent {
                     newStartTimeAfterCurrentStart(taData, actualStartHour);
                 }
             }
+            
+            // new office hours
+            HashMap<String, StringProperty> newOfficeHours = cloneOfficeHours(taData.getOfficeHours());
+            
+            // new time
+            int finalStartHour = taData.getStartHour();
+            int finalEndHour = taData.getEndHour();
+            String finalStartMin = taData.getStartMin();
+            String finalEndMin = taData.getEndMin();
+            
+            jtps.getTransactions().remove(jtps.getMostRecentTransaction());
+            jtps.setMostRecentTransaction(jtps.getMostRecentTransaction()-1);
+            jtps.getTransactions().remove(jtps.getMostRecentTransaction());
+            jtps.setMostRecentTransaction(jtps.getMostRecentTransaction()-1);
+            
+            // push transaction to stack
+            jTPS_Transaction transaction = new TimeFrameChange_Transaction(oldOfficeHours,newOfficeHours,finalStartHour,finalStartMin,finalEndHour,finalEndMin,oldStartHour,oldStartMin,oldEndHour,oldEndMin, taData, this);
+            jtps.addTransaction(transaction);
         }
     }
     

@@ -16,6 +16,22 @@ public class jTPS {
         mostRecentTransaction = -1;
     }
     
+    public List<jTPS_Transaction> getTransactions(){
+        return transactions;
+    }
+    
+    public int getMostRecentTransaction(){
+        return mostRecentTransaction;
+    }
+    
+    public void setTransactions(List<jTPS_Transaction> transactions){
+        this.transactions = transactions;
+    }
+    
+    public void setMostRecentTransaction(int mostRecentTransaction){
+        this.mostRecentTransaction = mostRecentTransaction;
+    }
+    
     public void reset(){
         transactions.clear();
         mostRecentTransaction = -1;
