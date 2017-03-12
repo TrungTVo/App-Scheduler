@@ -70,7 +70,12 @@ public class DeleteTA_Transaction implements jTPS_Transaction {
         
         // put deleted TA back to cell
         for (String item:clonedOfficeHours.keySet()){
-            taData.getOfficeHours().get(item).setValue(clonedOfficeHours.get(item).getValue());
+            if (taData.getOfficeHours().containsKey(item)){
+                if (clonedOfficeHours.get(item) != null){
+                    if (taData.getOfficeHours().get(item) != null)
+                        taData.getOfficeHours().get(item).setValue(clonedOfficeHours.get(item).getValue());
+                }
+            }
         }
     }
     
@@ -78,7 +83,8 @@ public class DeleteTA_Transaction implements jTPS_Transaction {
         clonedOfficeHours.clear();
         for (String item:officeHours.keySet()){
             clonedOfficeHours.put(item, new Label().textProperty());
-            clonedOfficeHours.get(item).setValue(new String(officeHours.get(item).getValue()));
+            if (officeHours.get(item) != null)
+                clonedOfficeHours.get(item).setValue(new String(officeHours.get(item).getValue()));
         }
         return clonedOfficeHours;
     }

@@ -430,8 +430,16 @@ public class TAWorkspace extends AppWorkspaceComponent {
         
         int sizeOfOldGrid = (int)taData.differenceRowsBetweenStartAndEnd()+1;
         updatingTime = true;
+        
+        int oldStartHour = taData.getStartHour();
+        int oldEndHour = taData.getEndHour();
+        String oldStartMin = taData.getStartMin();
+        String oldEndMin = taData.getEndMin();
+        
         taData.setEndHour(actualEndHour);
         taData.setEndMin("00");
+        
+        HashMap<String, StringProperty> clonedOfficeHours = cloneOfficeHours(taData.getOfficeHours());
         
         for (int i=sizeOfOldGrid; i>sizeOfOldGrid-differenceBetweenNewAndCurrentTime; i--){
             for (int col = 2; col < 7; col++) {
@@ -441,6 +449,10 @@ public class TAWorkspace extends AppWorkspaceComponent {
                 }
             }
         }
+        
+        // put transaction into stack
+        jTPS_Transaction transaction = new TimeFrameChange_Transaction(clonedOfficeHours, cloneOfficeHours(taData.getOfficeHours()), taData.getStartHour(), taData.getStartMin(), taData.getEndHour(), taData.getEndMin(),  oldStartHour, oldStartMin, oldEndHour, oldEndMin, taData, this);
+        jtps.addTransaction(transaction);
         
         // REBUILD THE GRID
         resetWorkspace();
@@ -454,8 +466,16 @@ public class TAWorkspace extends AppWorkspaceComponent {
         
         int sizeOfOldGrid = (int)taData.differenceRowsBetweenStartAndEnd()+1;
         updatingTime = true;
+        
+        int oldStartHour = taData.getStartHour();
+        int oldEndHour = taData.getEndHour();
+        String oldStartMin = taData.getStartMin();
+        String oldEndMin = taData.getEndMin();
+        
         taData.setEndHour(actualEndHour);
         taData.setEndMin("00");
+        
+        HashMap<String, StringProperty> clonedOfficeHours = cloneOfficeHours(taData.getOfficeHours());
         
         // FILL THE EMPTY ADDED CELLS ROWS
         for (int i=sizeOfOldGrid+1; i <= sizeOfOldGrid+differenceBetweenNewAndCurrentTime; i++){
@@ -464,6 +484,10 @@ public class TAWorkspace extends AppWorkspaceComponent {
                 taData.getOfficeHours().put(cellKey, new Label().textProperty());
             }
         }
+        
+        // put transaction into stack
+        jTPS_Transaction transaction = new TimeFrameChange_Transaction(clonedOfficeHours, cloneOfficeHours(taData.getOfficeHours()), taData.getStartHour(), taData.getStartMin(), taData.getEndHour(), taData.getEndMin(),  oldStartHour, oldStartMin, oldEndHour, oldEndMin, taData, this);
+        jtps.addTransaction(transaction);
         
         // REBUILD THE GRID
         resetWorkspace();
@@ -478,6 +502,12 @@ public class TAWorkspace extends AppWorkspaceComponent {
         
         int sizeOfOldGrid = (int)taData.differenceRowsBetweenStartAndEnd()+1;
         updatingTime = true;
+        
+        int oldStartHour = taData.getStartHour();
+        int oldEndHour = taData.getEndHour();
+        String oldStartMin = taData.getStartMin();
+        String oldEndMin = taData.getEndMin();
+        
         taData.setStartHour(actualStartHour);
         taData.setStartMin("00");
         
@@ -510,6 +540,10 @@ public class TAWorkspace extends AppWorkspaceComponent {
                 }
             }
         }
+        
+        // put transaction into stack
+        jTPS_Transaction transaction = new TimeFrameChange_Transaction(clonedOfficeHours, cloneOfficeHours(taData.getOfficeHours()), taData.getStartHour(), taData.getStartMin(), taData.getEndHour(), taData.getEndMin(),  oldStartHour, oldStartMin, oldEndHour, oldEndMin, taData, this);
+        jtps.addTransaction(transaction);
         
         // REBUILD THE GRID
         resetWorkspace();
@@ -807,9 +841,12 @@ public class TAWorkspace extends AppWorkspaceComponent {
                 addCellToGrid(dataComponent, officeHoursGridTACellPanes, officeHoursGridTACellLabels, col, row);
                 addCellToGrid(dataComponent, officeHoursGridTACellPanes, officeHoursGridTACellLabels, col, row+1);
                 if (updatingTime){
-                    dataComponent.getCellTextProperty(col, row).setValue(clonedOfficeHours.get(String.valueOf(col) + "_" + String.valueOf(row)).getValue());
-                    dataComponent.getCellTextProperty(col, row + 1).setValue(clonedOfficeHours.get(String.valueOf(col) + "_" + String.valueOf(row + 1)).getValue());
-                    
+                    if (clonedOfficeHours.containsKey(String.valueOf(col) + "_" + String.valueOf(row))) {
+                        dataComponent.getCellTextProperty(col, row).setValue(clonedOfficeHours.get(String.valueOf(col) + "_" + String.valueOf(row)).getValue());
+                    }
+                    if (clonedOfficeHours.containsKey(String.valueOf(col) + "_" + String.valueOf(row + 1))){
+                        dataComponent.getCellTextProperty(col, row + 1).setValue(clonedOfficeHours.get(String.valueOf(col) + "_" + String.valueOf(row + 1)).getValue());
+                    }
                 }
                 col++;
             }
