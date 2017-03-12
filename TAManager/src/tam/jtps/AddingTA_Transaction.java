@@ -12,24 +12,45 @@ import javafx.collections.ObservableList;
 import tam.data.TeachingAssistant;
 
 public class AddingTA_Transaction implements jTPS_Transaction {
-    private TeachingAssistant ta;
+    private String taName;
+    private String taEmail;
     private ObservableList<TeachingAssistant> taList;
     
-    public AddingTA_Transaction(TeachingAssistant ta, ObservableList<TeachingAssistant> taList){
-        this.ta = ta;
+    public AddingTA_Transaction(String taName, String taEmail, ObservableList<TeachingAssistant> taList){
+        this.taName = taName;
+        this.taEmail = taEmail;
         this.taList = taList;
     }
-
+    
     @Override
     public void doTransaction() {
-        taList.add(ta);
+        int indexOfOldTA = -1;
+        for (int i=0; i<taList.size(); i++){
+            if (taList.get(i).getName().equals(taName)){
+                indexOfOldTA = i;
+                break;
+            }
+        }
+        if (indexOfOldTA != -1){
+            taList.remove(indexOfOldTA);
+        }
+        
+        taList.add(new TeachingAssistant(taName, taEmail));
         Collections.sort(taList);
     }
 
     @Override
     public void undoTransaction() {
-        if (taList.contains(ta))
-            taList.remove(ta);
+        int indexOfOldTA = -1;
+        for (int i=0; i<taList.size(); i++){
+            if (taList.get(i).getName().equals(taName)){
+                indexOfOldTA = i;
+                break;
+            }
+        }
+        if (indexOfOldTA != -1){
+            taList.remove(indexOfOldTA);
+        }
     }
        
 }

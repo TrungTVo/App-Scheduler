@@ -2,6 +2,7 @@ package tam.workspace;
 
 import static tam.TAManagerProp.*;
 import djf.ui.AppMessageDialogSingleton;
+import java.util.Collections;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -15,7 +16,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import tam.jtps.AddingTA_Transaction;
 import tam.jtps.DeleteTA_Transaction;
+import tam.jtps.EditTA_Transaction;
 import tam.jtps.ToggleCell_Transaction;
 import tam.jtps.jTPS_Transaction;
 
@@ -102,7 +105,6 @@ public class TAController {
                         emailTextField.setText("");
                     } else {            // if current mode is Edit TA
                         data.getTeachingAssistants().remove((TeachingAssistant)data.getTeachingAssistants().get(indexOfOldTA));
-                        data.addTA(name, email);
                     }
                     // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
                     nameTextField.requestFocus();
@@ -128,6 +130,7 @@ public class TAController {
         TAData data = (TAData)app.getDataComponent();
         TAWorkspace workspace = (TAWorkspace) app.getWorkspaceComponent();
         String nameToUpdate = workspace.getNameTextField().getText();
+        String emailToUpdate = workspace.getEmailTextField().getText();
         
         // create a list of TAs excluding old TA, for testing if new edited TA is contained in the list or not
         indexOfOldTA = data.getTeachingAssistants().indexOf(ta);
@@ -137,6 +140,12 @@ public class TAController {
         
         boolean edited = handleAddTA();               // then edit it
         if (edited){
+            // push current state into stack before transaction
+            //TeachingAssistant newEditTA = ((AddingTA_Transaction)((TAWorkspace)app.getWorkspaceComponent()).getJTPS().getTransactions().get(((TAWorkspace)app.getWorkspaceComponent()).getJTPS().getMostRecentTransaction())).getTA();           // get the new TA that just has been edited (added) from the AddingTA_Transaction 
+            
+            jTPS_Transaction transaction = new EditTA_Transaction(workspace, data, oldName, oldEmail, nameToUpdate, emailToUpdate, edited);
+            ((TAWorkspace)app.getWorkspaceComponent()).getJTPS().addTransaction(transaction);
+            /*
             StringBuilder cellTextStr;
             for (String cellKey:data.getOfficeHours().keySet()){
                 StringProperty cellText = data.getOfficeHours().get(cellKey);
@@ -146,15 +155,12 @@ public class TAController {
                         data.removeTAFromCell(cellText, oldName, nameToUpdate, edited, cellKey);
                     }
                 }
-            }
+            }*/
         } else {                // if there is an error occured while editing, set TA Object back to old ones with old name & email
             ta.setName(oldName);
             ta.setEmail(oldEmail);
         }
-        workspace.getNameTextField().clear();
-        workspace.getEmailTextField().clear();
-        workspace.getAddButton().setText("Add TA");
-        workspace.getTATable().getSelectionModel().clearSelection();
+        
         return edited;
     }
     
@@ -179,7 +185,7 @@ public class TAController {
             String cellKey = pane.getId();
             
             // push current state into stack before transaction
-            jTPS_Transaction transaction = new ToggleCell_Transaction(ta, data.getOfficeHours(), pane, data);
+            jTPS_Transaction transaction = new ToggleCell_Transaction(taName, pane, data);
             ((TAWorkspace)app.getWorkspaceComponent()).getJTPS().addTransaction(transaction);
             
             // AND TOGGLE THE OFFICE HOURS IN THE CLICKED CELL
@@ -193,7 +199,7 @@ public class TAController {
     public void handleDeleteTAfromTable(TAData data, TeachingAssistant ta) {
         
         // push current state into stack before transaction
-        jTPS_Transaction transaction = new DeleteTA_Transaction(ta, data.getOfficeHours(), data);
+        jTPS_Transaction transaction = new DeleteTA_Transaction(ta.getName(), ta.getEmail(), data.getOfficeHours(), data);
         ((TAWorkspace)app.getWorkspaceComponent()).getJTPS().addTransaction(transaction);
         
         /*

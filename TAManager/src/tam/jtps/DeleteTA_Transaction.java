@@ -16,13 +16,15 @@ import tam.data.TAData;
 import tam.data.TeachingAssistant;
 
 public class DeleteTA_Transaction implements jTPS_Transaction {
-    private TeachingAssistant ta;
+    private String taName;
+    private String taEmail;
     private HashMap<String, StringProperty> officeHours;
     private TAData taData;
     private HashMap<String, StringProperty> clonedOfficeHours = new HashMap<>();
     
-    public DeleteTA_Transaction(TeachingAssistant ta, HashMap<String, StringProperty> officeHours, TAData taData){
-        this.ta = ta;
+    public DeleteTA_Transaction(String taName, String taEmail, HashMap<String, StringProperty> officeHours, TAData taData){
+        this.taName = taName;
+        this.taEmail = taEmail;
         this.officeHours = officeHours;
         this.taData = taData;
         clonedOfficeHours = clone(officeHours);
@@ -30,7 +32,6 @@ public class DeleteTA_Transaction implements jTPS_Transaction {
 
     @Override
     public void doTransaction() {
-        String taName = ta.getName();
         for (String cellKey:taData.getOfficeHours().keySet()){
             StringProperty cellText = taData.getOfficeHours().get(cellKey);
             if (cellText != null) {
@@ -39,13 +40,32 @@ public class DeleteTA_Transaction implements jTPS_Transaction {
                 }
             }
         }
-        taData.getTeachingAssistants().remove(ta);
+        
+        int indexOfRemoveTA = -1;
+        for (int i=0; i<taData.getTeachingAssistants().size(); i++){
+            if (((TeachingAssistant)taData.getTeachingAssistants().get(i)).getName().equals(taName)){
+                indexOfRemoveTA = i;
+                break;
+            }
+        }
+        if (indexOfRemoveTA != -1)
+            taData.getTeachingAssistants().remove(indexOfRemoveTA);
     }
 
     @Override
     public void undoTransaction() {
         // add TA back to table
-        taData.getTeachingAssistants().add(ta);
+        int indexOfRemoveTA = -1;
+        for (int i=0; i<taData.getTeachingAssistants().size(); i++){
+            if (((TeachingAssistant)taData.getTeachingAssistants().get(i)).getName().equals(taName)){
+                indexOfRemoveTA = i;
+                break;
+            }
+        }
+        if (indexOfRemoveTA != -1)
+            taData.getTeachingAssistants().remove(indexOfRemoveTA);
+        
+        taData.getTeachingAssistants().add(new TeachingAssistant(taName, taEmail));
         Collections.sort(taData.getTeachingAssistants());
         
         // put deleted TA back to cell

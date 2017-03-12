@@ -15,15 +15,12 @@ import tam.data.TAData;
 import tam.data.TeachingAssistant;
 
 public class ToggleCell_Transaction implements jTPS_Transaction {
-    private TeachingAssistant ta;
-    private HashMap<String, StringProperty> officeHours;
+    private String taName;
     private Pane pane;
     private TAData taData;
     
-    public ToggleCell_Transaction(TeachingAssistant ta, HashMap<String, StringProperty> officeHours,
-                                                    Pane pane, TAData taData){
-        this.ta = ta;
-        this.officeHours = officeHours;
+    public ToggleCell_Transaction(String taName, Pane pane, TAData taData){
+        this.taName = taName;
         this.pane = pane;
         this.taData = taData;
     }
@@ -31,12 +28,12 @@ public class ToggleCell_Transaction implements jTPS_Transaction {
     @Override
     public void doTransaction() {
         // TOGGLE THE OFFICE HOURS IN THE CLICKED CELL
-        taData.toggleTAOfficeHours(pane.getId(), ta.getName());
+        taData.toggleTAOfficeHours(pane.getId(), taName);
     }
 
     @Override
     public void undoTransaction() {
         // TOGGLE THE OFFICE HOURS IN THE CLICKED CELL
-        taData.toggleTAOfficeHours(pane.getId(), ta.getName());
+        taData.toggleTAOfficeHours(pane.getId(), taName);
     }
 }
