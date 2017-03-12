@@ -38,7 +38,9 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.FlowPane;
 import tam.file.TAFiles;
+import tam.jtps.TimeFrameChange_Transaction;
 import tam.jtps.jTPS;
+import tam.jtps.jTPS_Transaction;
 /**
  * This class serves as the workspace component for the TA Manager
  * application. It provides all the user interface controls in 
@@ -250,17 +252,15 @@ public class TAWorkspace extends AppWorkspaceComponent {
         
         // CONTROL FOR CLEAR BUTTON
         clearButton.setOnAction(e -> {
-            if (addButton.getText().equals("Edit TA")){
-                nameTextField.clear();
-                emailTextField.clear();
-                addButton.setText("Add TA");
-                // Get the table
-                TAWorkspace workspace = (TAWorkspace)app.getWorkspaceComponent();
-                TableView taTable = workspace.getTATable();
-                taTable.getSelectionModel().clearSelection();
-                // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
-                nameTextField.requestFocus();
-            }
+            nameTextField.clear();
+            emailTextField.clear();
+            addButton.setText("Add TA");
+            // Get the table
+            TAWorkspace workspace = (TAWorkspace) app.getWorkspaceComponent();
+            TableView taTable = workspace.getTATable();
+            taTable.getSelectionModel().clearSelection();
+            // AND SEND THE CARET BACK TO THE NAME TEXT FIELD FOR EASY DATA ENTRY
+            nameTextField.requestFocus();
         });
         
         updated = false;
@@ -522,6 +522,11 @@ public class TAWorkspace extends AppWorkspaceComponent {
         int differenceBetweenNewAndCurrentTime = (int)differenceBetweenNewAndCurrentTime(taData.getStartHour(), taData.getStartMin(), actualStartHour);
         
         updatingTime = true;
+        int oldStartHour = taData.getStartHour();
+        int oldEndHour = taData.getEndHour();
+        String oldStartMin = taData.getStartMin();
+        String oldEndMin = taData.getEndMin();
+        
         taData.setStartHour(actualStartHour);
         taData.setStartMin("00");
         
@@ -543,6 +548,10 @@ public class TAWorkspace extends AppWorkspaceComponent {
                 taData.getOfficeHours().put(cellKey, clonedOfficeHours.get(String.valueOf(col)+"_"+String.valueOf(i-differenceBetweenNewAndCurrentTime)));
             }
         }
+        
+        // put transaction into stack
+        jTPS_Transaction transaction = new TimeFrameChange_Transaction(clonedOfficeHours, cloneOfficeHours(taData.getOfficeHours()), taData.getStartHour(), taData.getStartMin(), taData.getEndHour(), taData.getEndMin(),  oldStartHour, oldStartMin, oldEndHour, oldEndMin, taData, this);
+        jtps.addTransaction(transaction);
         
         // REBUILD THE GRID
         resetWorkspace();
@@ -585,6 +594,14 @@ public class TAWorkspace extends AppWorkspaceComponent {
     
     public jTPS getJTPS(){
         return jtps;
+    }
+    
+    public boolean getUpdatingTime(){
+        return updatingTime;
+    }
+    
+    public void setUpdatingTime(boolean updatingTime){
+        this.updatingTime = updatingTime;
     }
     
     public HBox getTAsHeaderBox() {
@@ -745,7 +762,7 @@ public class TAWorkspace extends AppWorkspaceComponent {
         reloadOfficeHoursGrid(taData);
     }
 
-    public void reloadOfficeHoursGrid(TAData dataComponent) {        
+    public void reloadOfficeHoursGrid(TAData dataComponent) {
         ArrayList<String> gridHeaders = dataComponent.getGridHeaders();
 
         // ADD THE TIME HEADERS
@@ -790,8 +807,9 @@ public class TAWorkspace extends AppWorkspaceComponent {
                 addCellToGrid(dataComponent, officeHoursGridTACellPanes, officeHoursGridTACellLabels, col, row);
                 addCellToGrid(dataComponent, officeHoursGridTACellPanes, officeHoursGridTACellLabels, col, row+1);
                 if (updatingTime){
-                    dataComponent.getCellTextProperty(col, row).setValue(clonedOfficeHours.get(String.valueOf(col)+"_"+String.valueOf(row)).getValue());
-                    dataComponent.getCellTextProperty(col, row+1).setValue(clonedOfficeHours.get(String.valueOf(col)+"_"+String.valueOf(row+1)).getValue());
+                    dataComponent.getCellTextProperty(col, row).setValue(clonedOfficeHours.get(String.valueOf(col) + "_" + String.valueOf(row)).getValue());
+                    dataComponent.getCellTextProperty(col, row + 1).setValue(clonedOfficeHours.get(String.valueOf(col) + "_" + String.valueOf(row + 1)).getValue());
+                    
                 }
                 col++;
             }

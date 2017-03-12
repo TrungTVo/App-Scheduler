@@ -59,6 +59,9 @@ public class TAFiles implements AppFileComponent {
 
 	// LOAD THE JSON FILE WITH ALL THE DATA
 	JsonObject json = loadJSONFile(filePath);
+        
+        // MAKE SURE THAT AT THE BEGINNING, THERE IS NO UPDATING OFFICE HOURS GRID
+        ((TAWorkspace)app.getWorkspaceComponent()).setUpdatingTime(false);
 
 	// LOAD THE START AND END HOURS
 	String startHour = json.getString(JSON_START_HOUR);

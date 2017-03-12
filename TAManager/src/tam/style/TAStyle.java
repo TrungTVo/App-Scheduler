@@ -131,23 +131,27 @@ public class TAStyle extends AppStyleComponent {
                 pane.setStyle("-fx-background-color: #ffff00; -fx-border-width: 2px; -fx-border-color: blue");
                 //pane.setStyle("-fx-border-width: 2px");
                 String cellKey = workspaceComponent.getCellKey(pane);
-                String[] rowCol = cellKey.split("_");           // [0]-col; [1]-row
-                workspaceComponent.getOfficeHoursGridTimeCellPanes().get("0_"+rowCol[1]).setStyle("-fx-background-color: #87CEEB");
-                workspaceComponent.getOfficeHoursGridTimeCellPanes().get("1_"+rowCol[1]).setStyle("-fx-background-color: #87CEEB");
-                workspaceComponent.getOfficeHoursGridDayHeaderPanes().get(String.valueOf(rowCol[0])+"_0").setStyle("-fx-background-color: #87CEEB");
-                highlightLeftTargetCell(workspaceComponent, rowCol[0], rowCol[1], "#F0E68C");
-                highlightAboveTargetCell(workspaceComponent, rowCol[0], rowCol[1], "#F0E68C");
+                if (cellKey != null) {
+                    String[] rowCol = cellKey.split("_");           // [0]-col; [1]-row
+                    workspaceComponent.getOfficeHoursGridTimeCellPanes().get("0_" + rowCol[1]).setStyle("-fx-background-color: #87CEEB");
+                    workspaceComponent.getOfficeHoursGridTimeCellPanes().get("1_" + rowCol[1]).setStyle("-fx-background-color: #87CEEB");
+                    workspaceComponent.getOfficeHoursGridDayHeaderPanes().get(String.valueOf(rowCol[0]) + "_0").setStyle("-fx-background-color: #87CEEB");
+                    highlightLeftTargetCell(workspaceComponent, rowCol[0], rowCol[1], "#F0E68C");
+                    highlightAboveTargetCell(workspaceComponent, rowCol[0], rowCol[1], "#F0E68C");
+                }
             });
             pane.setOnMouseExited(e -> {
                 pane.setStyle("-fx-background-color: #BDB76B; -fx-border-width: 0.5px; -fx-border-color: black");
                 //pane.setStyle("-fx-border-width: 0.5px");
                 String cellKey = workspaceComponent.getCellKey(pane);
-                String[] rowCol = cellKey.split("_");           // [0]-col; [1]-row
-                workspaceComponent.getOfficeHoursGridTimeCellPanes().get("0_"+rowCol[1]).setStyle("-fx-background-color: #0000ff");
-                workspaceComponent.getOfficeHoursGridTimeCellPanes().get("1_"+rowCol[1]).setStyle("-fx-background-color: #0000ff");
-                workspaceComponent.getOfficeHoursGridDayHeaderPanes().get(String.valueOf(rowCol[0])+"_0").setStyle("-fx-background-color: navy");
-                highlightLeftTargetCell(workspaceComponent, rowCol[0], rowCol[1], "#BDB76B");
-                highlightAboveTargetCell(workspaceComponent, rowCol[0], rowCol[1], "#BDB76B");
+                if (cellKey != null){
+                    String[] rowCol = cellKey.split("_");           // [0]-col; [1]-row
+                    workspaceComponent.getOfficeHoursGridTimeCellPanes().get("0_"+rowCol[1]).setStyle("-fx-background-color: #0000ff");
+                    workspaceComponent.getOfficeHoursGridTimeCellPanes().get("1_"+rowCol[1]).setStyle("-fx-background-color: #0000ff");
+                    workspaceComponent.getOfficeHoursGridDayHeaderPanes().get(String.valueOf(rowCol[0])+"_0").setStyle("-fx-background-color: navy");
+                    highlightLeftTargetCell(workspaceComponent, rowCol[0], rowCol[1], "#BDB76B");
+                    highlightAboveTargetCell(workspaceComponent, rowCol[0], rowCol[1], "#BDB76B");
+                }
             });
         }
     }
