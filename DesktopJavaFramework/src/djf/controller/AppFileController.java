@@ -26,7 +26,10 @@ import static djf.settings.AppPropertyType.SAVE_ERROR_TITLE;
 import static djf.settings.AppPropertyType.SAVE_UNSAVED_WORK_MESSAGE;
 import static djf.settings.AppPropertyType.SAVE_UNSAVED_WORK_TITLE;
 import static djf.settings.AppPropertyType.SAVE_WORK_TITLE;
+import djf.settings.AppStartupConstants;
 import static djf.settings.AppStartupConstants.PATH_WORK;
+import javafx.stage.DirectoryChooser;
+import org.apache.commons.io.FileUtils;
 
 /**
  * This class provides the event programmed responses for the file controls
@@ -246,6 +249,22 @@ public class AppFileController {
                 AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
 		PropertiesManager props = PropertiesManager.getPropertiesManager();
                 dialog.show(props.getProperty(SAVE_ERROR_TITLE), props.getProperty(SAVE_ERROR_MESSAGE));
+        }
+    }
+    
+    public void handleExport() throws IOException{    
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle("Export");
+        File defaultDirectory = new File("/Users/");
+        chooser.setInitialDirectory(defaultDirectory);
+        File selectedDirectory = chooser.showDialog(app.getGUI().getWindow());
+        if (selectedDirectory != null) {
+            String currentDir = System.getProperty("user.dir");
+            File srcDir = new File(currentDir.substring(0,currentDir.lastIndexOf("/")).concat("/TAManagerTester/public_html"));
+            
+            FileUtils.copyDirectory(srcDir, selectedDirectory);
+            File pathToNewOfficeHoursGrid = new File(selectedDirectory.toString().concat("/js/OfficeHoursGridData.json"));
+            saveWork(pathToNewOfficeHoursGrid);
         }
     }
 

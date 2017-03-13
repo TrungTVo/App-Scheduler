@@ -20,6 +20,9 @@ import static djf.settings.AppStartupConstants.PATH_IMAGES;
 import djf.components.AppStyleComponent;
 import static djf.components.AppStyleComponent.CLASS_BORDERED_PANE;
 import static djf.components.AppStyleComponent.CLASS_FILE_BUTTON;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class provides the basic user interface for this application,
@@ -166,6 +169,13 @@ public class AppGUI {
         });
         saveAsButton.setOnAction(e -> {
             fileController.handleSaveAsRequest();
+        });
+        exportButton.setOnAction(e -> {
+            try {
+                fileController.handleExport();
+            } catch (IOException ex) {
+                Logger.getLogger(AppGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         exitButton.setOnAction(e -> {
             fileController.handleExitRequest();

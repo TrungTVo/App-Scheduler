@@ -1,4 +1,10 @@
-
+/**
+ * This class serves as a transaction object for modifying Time Frame. Used
+ * in UNDO/REDO mode. This transaction object will be used to be pushed
+ * into the stack using jTPS framework.
+ * 
+ * @author Trung Vo - CSE219
+ */
 package tam.jtps;
 
 import java.util.HashMap;
