@@ -23,6 +23,7 @@ public enum AppPropertyType {
     LOAD_ICON,
     SAVE_ICON,
     SAVE_AS_ICON,
+    EXPORT_ICON,
     EXIT_ICON,
         
     // FILE TOOLBAR TOOLTIPS FOR BUTTONS

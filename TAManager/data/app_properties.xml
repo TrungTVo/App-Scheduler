@@ -18,6 +18,7 @@
         <property name="LOAD_ICON"	    value="Load.png"></property>
         <property name="SAVE_ICON"	    value="Save.png"></property>
         <property name="SAVE_AS_ICON"    value="SaveAs.png"></property>
+        <property name="EXPORT_ICON"          value="Export.png"></property>
         <property name="EXIT_ICON"          value="Exit.png"></property> 
         
         <!-- TOOLTIPS FOR BUTTONS -->
@@ -25,6 +26,7 @@
         <property name="LOAD_TOOLTIP"		value="Load an existing TA Grid"></property>
         <property name="SAVE_TOOLTIP"		value="Save the current TA Grid"></property>
         <property name="SAVE_AS_TOOLTIP"     value="Save as for the current TA Grid"></property>
+        <property name="EXPORT_TOOLTIP"          value="Export Application"></property>
         <property name="EXIT_TOOLTIP"		value="Exit the Application"></property>
         
         <!-- ERROR MESSAGES -->

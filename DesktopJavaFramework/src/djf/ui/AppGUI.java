@@ -52,6 +52,7 @@ public class AppGUI {
     protected Button loadButton;
     protected Button saveButton;
     protected Button saveAsButton;
+    protected Button exportButton;
     protected Button exitButton;
     
     // THIS DIALOG IS USED FOR GIVING FEEDBACK TO THE USER
@@ -125,6 +126,7 @@ public class AppGUI {
         // ONCE EDITING THAT FIRST COURSE BEGINS
 	newButton.setDisable(false);
         loadButton.setDisable(false);
+        exportButton.setDisable(false);
 	exitButton.setDisable(false);
 
         // NOTE THAT THE NEW, LOAD, AND EXIT BUTTONS
@@ -148,6 +150,7 @@ public class AppGUI {
         loadButton = initChildButton(fileToolbarPane,	LOAD_ICON.toString(),	    LOAD_TOOLTIP.toString(),	false);
         saveButton = initChildButton(fileToolbarPane,	SAVE_ICON.toString(),	    SAVE_TOOLTIP.toString(),	true);
         saveAsButton = initChildButton(fileToolbarPane, SAVE_AS_ICON.toString(),    SAVE_AS_TOOLTIP.toString(), true);
+        exportButton = initChildButton(fileToolbarPane,	EXPORT_ICON.toString(),	    EXPORT_TOOLTIP.toString(),	false);
         exitButton = initChildButton(fileToolbarPane,	EXIT_ICON.toString(),	    EXIT_TOOLTIP.toString(),	false);
 
 	// AND NOW SETUP THEIR EVENT HANDLERS
@@ -249,6 +252,7 @@ public class AppGUI {
 	loadButton.getStyleClass().add(CLASS_FILE_BUTTON);
 	saveButton.getStyleClass().add(CLASS_FILE_BUTTON);
         saveAsButton.getStyleClass().add(CLASS_FILE_BUTTON);
+        exportButton.getStyleClass().add(CLASS_FILE_BUTTON);
 	exitButton.getStyleClass().add(CLASS_FILE_BUTTON);
     }
 }
