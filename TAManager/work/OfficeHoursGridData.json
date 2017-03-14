@@ -4,18 +4,6 @@
     "endHour":"20",
     "undergrad_tas":[
         {
-            "name":"Aarin Chase",
-            "email":"aarin.chase@stonybrook.edu"
-        },
-        {
-            "name":"Ali Afzal",
-            "email":"ali.afzal@stonybrook.edu"
-        },
-        {
-            "name":"Anthony Roy",
-            "email":"anthony.roy@stonybrook.edu"
-        },
-        {
             "name":"Bryan Robicheau",
             "email":"bryan.robicheau@stonybrook.edu"
         },
@@ -244,11 +232,6 @@
             "name":"Jamie Kunzmann"
         },
         {
-            "day":"TUESDAY",
-            "time":"1_00pm",
-            "name":"Ali Afzal"
-        },
-        {
             "day":"WEDNESDAY",
             "time":"1_00pm",
             "name":"Hsiang-Ju Lai"
@@ -284,11 +267,6 @@
             "name":"Jamie Kunzmann"
         },
         {
-            "day":"TUESDAY",
-            "time":"1_30pm",
-            "name":"Ali Afzal"
-        },
-        {
             "day":"WEDNESDAY",
             "time":"1_30pm",
             "name":"Hsiang-Ju Lai"
@@ -314,19 +292,9 @@
             "name":"Bryan Robicheau"
         },
         {
-            "day":"TUESDAY",
-            "time":"2_00pm",
-            "name":"Ali Afzal"
-        },
-        {
             "day":"WEDNESDAY",
             "time":"2_00pm",
             "name":"Bryan Robicheau"
-        },
-        {
-            "day":"THURSDAY",
-            "time":"2_00pm",
-            "name":"Anthony Roy"
         },
         {
             "day":"MONDAY",
@@ -339,11 +307,6 @@
             "name":"James Hoffman"
         },
         {
-            "day":"TUESDAY",
-            "time":"2_30pm",
-            "name":"Anthony Roy"
-        },
-        {
             "day":"WEDNESDAY",
             "time":"2_30pm",
             "name":"Bryan Robicheau"
@@ -352,11 +315,6 @@
             "day":"WEDNESDAY",
             "time":"2_30pm",
             "name":"Yu Zhao"
-        },
-        {
-            "day":"THURSDAY",
-            "time":"2_30pm",
-            "name":"Anthony Roy"
         },
         {
             "day":"FRIDAY",
@@ -377,11 +335,6 @@
             "day":"MONDAY",
             "time":"3_00pm",
             "name":"James Hoffman"
-        },
-        {
-            "day":"TUESDAY",
-            "time":"3_00pm",
-            "name":"Anthony Roy"
         },
         {
             "day":"WEDNESDAY",
@@ -399,11 +352,6 @@
             "name":"Jerrel Sogoni"
         },
         {
-            "day":"THURSDAY",
-            "time":"3_00pm",
-            "name":"Anthony Roy"
-        },
-        {
             "day":"FRIDAY",
             "time":"3_00pm",
             "name":"Jacob Evans"
@@ -424,19 +372,9 @@
             "name":"James Hoffman"
         },
         {
-            "day":"TUESDAY",
-            "time":"3_30pm",
-            "name":"Anthony Roy"
-        },
-        {
             "day":"WEDNESDAY",
             "time":"3_30pm",
             "name":"Bryan Robicheau"
-        },
-        {
-            "day":"THURSDAY",
-            "time":"3_30pm",
-            "name":"Anthony Roy"
         },
         {
             "day":"FRIDAY",
@@ -499,11 +437,6 @@
             "name":"Chaeyoung Lee"
         },
         {
-            "day":"TUESDAY",
-            "time":"5_30pm",
-            "name":"Ali Afzal"
-        },
-        {
             "day":"THURSDAY",
             "time":"5_30pm",
             "name":"Muhammad R Islam"
@@ -519,19 +452,9 @@
             "name":"Michael Mathew"
         },
         {
-            "day":"WEDNESDAY",
-            "time":"6_00pm",
-            "name":"Aarin Chase"
-        },
-        {
             "day":"THURSDAY",
             "time":"6_00pm",
             "name":"Chaeyoung Lee"
-        },
-        {
-            "day":"FRIDAY",
-            "time":"6_00pm",
-            "name":"Aarin Chase"
         },
         {
             "day":"TUESDAY",
@@ -539,19 +462,9 @@
             "name":"Michael Mathew"
         },
         {
-            "day":"WEDNESDAY",
-            "time":"6_30pm",
-            "name":"Aarin Chase"
-        },
-        {
             "day":"THURSDAY",
             "time":"6_30pm",
             "name":"Chaeyoung Lee"
-        },
-        {
-            "day":"FRIDAY",
-            "time":"6_30pm",
-            "name":"Aarin Chase"
         },
         {
             "day":"MONDAY",
@@ -569,16 +482,6 @@
             "name":"Hsiang-Ju Lai"
         },
         {
-            "day":"WEDNESDAY",
-            "time":"7_00pm",
-            "name":"Aarin Chase"
-        },
-        {
-            "day":"FRIDAY",
-            "time":"7_00pm",
-            "name":"Aarin Chase"
-        },
-        {
             "day":"MONDAY",
             "time":"7_30pm",
             "name":"Hsiang-Ju Lai"
@@ -592,16 +495,6 @@
             "day":"TUESDAY",
             "time":"7_30pm",
             "name":"Hsiang-Ju Lai"
-        },
-        {
-            "day":"WEDNESDAY",
-            "time":"7_30pm",
-            "name":"Aarin Chase"
-        },
-        {
-            "day":"FRIDAY",
-            "time":"7_30pm",
-            "name":"Aarin Chase"
         }
     ]
 }

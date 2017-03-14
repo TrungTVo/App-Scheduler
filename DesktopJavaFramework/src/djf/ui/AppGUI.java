@@ -64,6 +64,9 @@ public class AppGUI {
     // THIS TITLE WILL GO IN THE TITLE BAR
     protected String appTitle;
     
+    protected boolean newed;
+    protected boolean loaded;
+    
     /**
      * This constructor initializes the file toolbar for use.
      * 
@@ -86,6 +89,22 @@ public class AppGUI {
 		
         // AND FINALLY START UP THE WINDOW (WITHOUT THE WORKSPACE)
         initWindow();
+    }
+    
+    public boolean getNewed(){
+        return newed;
+    }
+    
+    public boolean getLoaded(){
+        return loaded;
+    }
+    
+    public void setNewed(boolean newed){
+        this.newed = newed;
+    }
+    
+    public void setLoaded(boolean loaded){
+        this.loaded = loaded;
     }
     
     public AppFileController getAppFileController() { return fileController; }
@@ -129,7 +148,11 @@ public class AppGUI {
         // ONCE EDITING THAT FIRST COURSE BEGINS
 	newButton.setDisable(false);
         loadButton.setDisable(false);
-        exportButton.setDisable(false);
+        
+        if (newed || loaded)
+            exportButton.setDisable(false);
+        else
+            exportButton.setDisable(true);
 	exitButton.setDisable(false);
 
         // NOTE THAT THE NEW, LOAD, AND EXIT BUTTONS
@@ -153,7 +176,10 @@ public class AppGUI {
         loadButton = initChildButton(fileToolbarPane,	LOAD_ICON.toString(),	    LOAD_TOOLTIP.toString(),	false);
         saveButton = initChildButton(fileToolbarPane,	SAVE_ICON.toString(),	    SAVE_TOOLTIP.toString(),	true);
         saveAsButton = initChildButton(fileToolbarPane, SAVE_AS_ICON.toString(),    SAVE_AS_TOOLTIP.toString(), true);
-        exportButton = initChildButton(fileToolbarPane,	EXPORT_ICON.toString(),	    EXPORT_TOOLTIP.toString(),	false);
+        if (newed || loaded)
+            exportButton = initChildButton(fileToolbarPane,	EXPORT_ICON.toString(),	    EXPORT_TOOLTIP.toString(),	false);
+        else
+            exportButton = initChildButton(fileToolbarPane,	EXPORT_ICON.toString(),	    EXPORT_TOOLTIP.toString(),	true);
         exitButton = initChildButton(fileToolbarPane,	EXIT_ICON.toString(),	    EXIT_TOOLTIP.toString(),	false);
 
 	// AND NOW SETUP THEIR EVENT HANDLERS

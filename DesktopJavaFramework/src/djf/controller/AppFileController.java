@@ -109,12 +109,13 @@ public class AppFileController {
                 saved = false;
 		currentWorkFile = null;
 
-                // REFRESH THE GUI, WHICH WILL ENABLE AND DISABLE
-                // THE APPROPRIATE CONTROLS
-                app.getGUI().updateToolbarControls(saved);
-
                 // TELL THE USER NEW WORK IS UNDERWAY
 		dialog.show(props.getProperty(NEW_COMPLETED_TITLE), props.getProperty(NEW_COMPLETED_MESSAGE));
+                
+                // REFRESH THE GUI, WHICH WILL ENABLE AND DISABLE
+                // THE APPROPRIATE CONTROLS
+                app.getGUI().setNewed(true);
+                app.getGUI().updateToolbarControls(saved);
             }
         } catch (IOException ioe) {
             // SOMETHING WENT WRONG, PROVIDE FEEDBACK
@@ -141,6 +142,8 @@ public class AppFileController {
             if (continueToOpen) {
                 // GO AHEAD AND PROCEED LOADING A Course
                 promptToOpen();
+                app.getGUI().setLoaded(true);
+                app.getGUI().updateToolbarControls(saved);
             }
         } catch (IOException ioe) {
             // SOMETHING WENT WRONG
